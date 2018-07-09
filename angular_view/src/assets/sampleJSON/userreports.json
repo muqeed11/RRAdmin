@@ -1,0 +1,3 @@
+{
+"userdetails":{"id":"9988776655","name":"Ahmed","email":"ahmed@gmail.com","totalReports":"5","approvedReports":"2","gender":"F","registrationDate":"22-01-2018","subscriptoinEnds":"01-12-2018","area":"Tolichowki","city":"Hyderabad","enum1":"998877211","occupation":"Doctor","married":"Single","habits":"nothing","dname":"Mr.ABC","dnum":"11223344"},"reportdetails":[{"rid":"22","rtype":"CBP","rname":"9988776655.cbp.01012018","rdate":"01-01-2018","status":"Approved"},{"rid":"23","rtype":"CBP","rname":"9988776655.cbp.01012018","rdate":"01-01-2018","status":"Accepted"},{"rid":"24","rtype":"CBP","rname":"9988776655.cbp.01012018","rdate":"01-01-2018","status":"Deleted"}],"responseStatus":"0"
+}
