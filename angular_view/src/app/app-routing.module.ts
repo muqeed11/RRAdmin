@@ -7,7 +7,6 @@ import {AuthGuard} from "./auth/auth-guard.service";
 import {DashboardempComponent} from "./dashboardemp/dashboardemp.component";
 import {UsersComponent} from "./users/users.component";
 import {ReportsComponent} from "./reports/reports.component";
-import {AdminhomeComponent} from "./adminhome/adminhome.component";
 import {MessagetousersComponent} from "./messagetousers/messagetousers.component";
 
 const appRoutes: Routes =[
@@ -18,7 +17,7 @@ const appRoutes: Routes =[
   { path : 'dashboardemp', component:DashboardempComponent,canActivate:[AuthGuard]},
   { path : 'users', component:UsersComponent,canActivate:[AuthGuard]},
   { path : 'reports', component:ReportsComponent,canActivate:[AuthGuard]},
-  { path: 'messageToUsers', component:MessagetousersComponent,canActivate:[AuthGuard] },
+  { path: 'messageToUsers', component:MessagetousersComponent,canActivate:[AuthGuard] }
 
   // { path : 'dashboard', component:DashboardComponent },
   // { path : 'dashboardemp', component:DashboardempComponent},
