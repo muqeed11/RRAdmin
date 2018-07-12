@@ -8,8 +8,9 @@ export class ServerService {
 
  storeServers(servers: any[]){
    // return this.http.post('https://rrdummy-669b4.firebaseio.com/laboure1.json',servers);
-   return this.http.post('https://assetmanagepoc.firebaseio.com/laboure1.json',servers);
+   return this.http.post('http://localhost:3000/user',servers);
  }
+
 
   getReport(rid:string,userid:string){
    return this.http.get('./../assets/sampleJSON/showReport.json');

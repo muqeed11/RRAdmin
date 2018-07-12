@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AuthService} from "../auth.service";
+import {User} from "../user.model";
 
 
 @Component({
@@ -12,8 +13,8 @@ import {AuthService} from "../auth.service";
 })
 export class SigninComponent implements OnInit {
   res:String;
-  token:String;
-  errorMsg:String;
+  userName:String;
+   errorMsg : String;
 
  // constructor(private serverService: ServerService) { }
   constructor(private http:HttpClient , private router:Router,
@@ -26,14 +27,29 @@ export class SigninComponent implements OnInit {
 
     const userid = form.value.userid;
     const password = form.value.password;
+    const user = new User(userid,password);
 
-    const body = {"userName":userid,"password":password};
-    console.log("userid and pwd:" + body.password + body.userName);
 
-    this.res = this.authService.signinUser(userid,password) ;
-          if(this.res=='1')
-            this.errorMsg="invalid user"
 
+    // const body = {"userName":userid,"password":password};
+    // console.log("userid and pwd:" + User.userid + user.password);
+     this.authService.signinUser(user);
+    // this.errorMsg = this.authService.errorMsg;
+    // console.log(this.authService.errorMsg)
+
+       // .subscribe(
+       //   data => {
+       //     console.log(data);
+       //     const res = data['responseStatus'];
+       //     const token = data['token'];
+       //     this.userName = data['userName'];
+       //     console.log(res + token + this.userName)
+       //     if(res ==  '0')
+       //       this.router.navigate(['/dashboard'])
+       //     else this.errorMsg="invalid user"
+       //   },
+       //   error=> console.log(error)
+       // );
 
 }
   }

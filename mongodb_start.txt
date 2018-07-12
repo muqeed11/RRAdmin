@@ -1,1 +1,4 @@
 "C:\Program Files\MongoDB\Server\4.0\bin\mongod.exe" --dbpath="d:\data\db"
+
+
+db.Userauth.insert( { userId: "1400", password: "aa" , active: "Y" , createdDate: 2018-10-07 , validDate : 2018-12-31 , lastUpdated: 2018-10-07} )
