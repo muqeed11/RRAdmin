@@ -4,7 +4,7 @@
     <!--<div class="col-xs-3">-->
       <!--<app-sidenavbar></app-sidenavbar>-->
     <!--</div>-->
-    <div class="col-xs-9">
+    <div class="col-xs-12">
         <table  datatable   class="row-border hover" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" >
           <thead>
           <tr>
@@ -20,14 +20,14 @@
          </thead>
           <tbody>
           <tr *ngFor="let u1 of results">
-            <td>{{u1.ID}}</td>
-            <td>{{u1.Name}}</td>
-            <td>{{u1.Gender}}</td>
+            <td>{{u1.userId}}</td>
+            <td>{{u1.customerName}}</td>
+            <td>{{u1.gender}}</td>
             <td>{{u1.TotalReports}}</td>
             <td>{{u1.ApprovedReports}}</td>
-            <td>{{u1.RegistrationDate}}</td>
+            <td>{{u1.createdDate.toString()}}</td>
             <td>{{u1.SubscriptoinEnds}}</td>
-            <td>{{u1.City}}</td>
+            <td>{{u1.city}}</td>
           </tr>
           </tbody>
         </table>

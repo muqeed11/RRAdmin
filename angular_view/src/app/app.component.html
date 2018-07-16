@@ -1,27 +1,7 @@
 
-      <app-header *ngIf="!authService.isAuthenticated()"></app-header>
-      <!--<app-header *ngIf="authService.isAuthenticated()"></app-header>-->
-  <!--<app-sidenavbar *ngIf="authService.isAuthenticated()" ></app-sidenavbar>-->
-  <app-sidenavbar *ngIf="authService.isAuthenticated()"></app-sidenavbar>
-  <!--<app-sidenavbar></app-sidenavbar>-->
+      <!--<app-header *ngIf="!authService.isAuthenticated()"></app-header>-->
+      <app-header *ngIf="authService.isAuthenticated()"></app-header>
+   <!--<app-sidenavbar *ngIf="authService.isAuthenticated()"></app-sidenavbar>-->
+   <app-sidenavbar *ngIf="!authService.isAuthenticated()"></app-sidenavbar>
 
-  <!--<app-signin></app-signin>-->
-  <!--<app-sidenavbar *ngIf="authService.isAuthenticated()"></app-sidenavbar>-->
   <router-outlet></router-outlet>
-  <!--<router-outlet name="popup"></router-outlet>-->
-  <!--<app-signup></app-signup>-->
-  <!--<div class="container">-->
-  <!--<div class="container">-->
-    <!--<div class="col-md-12">-->
-      <!--<div class="row">-->
-        <!--<app-dashboard></app-dashboard>-->
-        <!--<app-dashboardemp></app-dashboardemp>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-
-  <!--</div>-->
-
-
-

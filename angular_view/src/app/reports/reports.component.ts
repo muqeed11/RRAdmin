@@ -11,12 +11,15 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 })
 export class ReportsComponent implements OnInit {
 
-  userDetails : any=[] ;
+  customerDetails : any=[] ;
   reportDetails : any =[] ;
   reportString: string;
   modalRef: BsModalRef;
-  reportId:string;
+  reportType:string;
   responseStatus:string;
+  reportId : string;
+  reason : string;
+  indexi : number;
 
   constructor(private http:HttpClient , private server:ServerService ,
               private modalService: BsModalService) { }
@@ -29,55 +32,36 @@ export class ReportsComponent implements OnInit {
   getUserDetails(form:NgForm){
 
     const userid = form.value.searchuserid;
-    const body = {"userName":userid};
+    const body:any = {"userId":userid} ;
 
-    this.server.getUserInformation(userid)
+    this.server.getUserInformation(body)
       .subscribe(
         (res)=>
         {
           document.getElementById('reportDetailsContainer').style.visibility='visible'
           document.getElementById('userDetailsContainer').style.visibility='visible'
           form.resetForm();
+          console.log(res)
 
-          this.userDetails = res['userdetails'];
-            this.reportDetails = res['reportdetails']
+          this.customerDetails = res['customerDetails'];
+            this.reportDetails = res['reportDetails']
         }
       )
   }
 
   updateUserDetails(form:NgForm){
-    //
-    // const username1 = form.value.uname;
-    // const uemail = form.value.email;
-    // const ugender = form.controls['gender'].value;
-    // //  .value.gender;
-    //
-    // const totalreports = form.value.totalreports;
-    // const regdate = form.value.regdate;
-    // const expdate = form.value.expdate;
-    //
-    // const area = form.value.area;
-    // const city = form.value.city;
-    // const enum1 = form.value.enum;
-    //
-    // const occupation = form.value.occupation;
-    // const married = form.controls['married'].value;
-    // const habits = form.value.habits;
-    //
-    // const dname = form.value.dname;
-    // const dnum = form.value.dnum;
+    // console.log(this.customerDetails)
+    console.log(this.customerDetails.dateOfBirth)
 
-    //console.log(this.userDetails);
-
-    this.server.updateUserInformation(this.userDetails)
+    this.server.updateUserInformation(this.customerDetails)
       .subscribe(
         (res)=>
         {
           this.responseStatus = res['responseStatus']
-          console.log(this.responseStatus)
+          // console.log(this.responseStatus)
           if(this.responseStatus == "0") {
-            window.alert("User details updated..!")
-            form.reset()
+            // window.alert("User details updated..!")
+            // form.reset()
             document.getElementById('reportDetailsContainer').style.visibility='hidden'
             document.getElementById('userDetailsContainer').style.visibility='hidden'
           }
@@ -87,58 +71,83 @@ export class ReportsComponent implements OnInit {
       );
   }
 
-  showReport(template: TemplateRef<any>,rid:string , userid:string){
+  showReport(template: TemplateRef<any>,reportId:string , i: number){
+    const body:any = {reportId:reportId} ;
 
-    this.server.getReport(rid,userid)
+
+    // console.log(body)
+    this.server.getReport(body)
       .subscribe(
         (res)=>
         {
-          this.reportString = res['report'];
-          this.reportId = rid
+          // console.log(res)
+          this.reportString = "data:image/jpg;base64," + res['reportFile'];
+          this.reportType = res['reportType'];
+          this.reportId = reportId;
+          this.indexi = i;
+          this.reason = this.reportDetails[this.indexi].reportReason;
+
           this.modalRef = this.modalService.show(template);
         }
       );
 
   }
 
-  deleteReport(rid:string , userid:string){
-    console.log("delete report"  + rid + userid)
-    this.modalRef.hide()
+  deleteReport(){
+    // console.log(this.reason);
+    const  body:any = {reportId: this.reportId , reportReason:this.reason}
+    this.modalRef.hide();
 
-    this.server.delReport(rid,userid)
+    this.server.delReport(body)
       .subscribe(
         (res)=>
         {
-          this.userDetails = res['userdetails'];
-          this.reportDetails = res['reportdetails']
+          // this.customerDetails = res['userdetails'];
+          // this.reportDetails = res['reportdetails'];
+          this.reason = res['reportReason']
+          this.responseStatus = res['reponseStatus']
+          this.reportDetails[this.indexi].reportReason = this.reason
+          this.reportDetails[this.indexi].reportStatus = "Deleted"
+
         }
       )
 
   }
 
-  rejectReport(rid:string , userid:string){
-    console.log("reject report" + rid + userid)
-    this.modalRef.hide()
-    this.server.rejReport(rid,userid)
+  rejectReport(){
+    // console.log(this.reason);
+    const  body:any = {reportId: this.reportId , reportReason:this.reason}
+    this.modalRef.hide();
+
+    this.server.rejReport(body)
       .subscribe(
         (res)=>
         {
-          this.userDetails = res['userdetails'];
-          this.reportDetails = res['reportdetails']
+          // this.customerDetails = res['userdetails'];
+          // this.reportDetails = res['reportdetails'];
+          this.reason = res['reportReason']
+          this.responseStatus = res['reponseStatus']
+          this.reportDetails[this.indexi].reportReason = this.reason
+          this.reportDetails[this.indexi].reportStatus = "Rejected"
+
         }
       )
 
   }
 
-  approveReport(rid:string , userid:string){
+  approveReport(){
+    const  body:any = {reportId: this.reportId , reportReason:this.reason}
+    this.modalRef.hide();
 
     this.modalRef.hide()
-    this.server.approveReport(rid,userid)
+    this.server.approveReport(body)
       .subscribe(
         (res)=>
         {
-          this.userDetails = res['userdetails'];
-          this.reportDetails = res['reportdetails']
+          this.reason = res['reportReason']
+          this.responseStatus = res['reponseStatus']
+          this.reportDetails[this.indexi].reportReason = this.reason
+          this.reportDetails[this.indexi].reportStatus = "Approved"
         }
       )
 

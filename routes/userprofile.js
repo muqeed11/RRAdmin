@@ -113,6 +113,7 @@ router.post('/updateprofile',function (req, res, next) {
         phoneNumber:req.body.userId,
         married:req.body.married,
         occupation:req.body.occupation,
+        habits:req.body.habits,
         medicalHistory:req.body.medicalHistory,
         familyDoctor:req.body.familyDoctor,
         doctorNumber:req.body.doctorNumber,

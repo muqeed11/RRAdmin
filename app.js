@@ -8,8 +8,12 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var appRoutes = require('./routes/app');
+var listofcustomers = require('./routes/listofcustomers');
 var loginRoutes = require('./routes/userauth');
 var userprofile = require('./routes/userprofile');
+var reports = require('./routes/reports');
+var editcustomer = require('./routes/editcustomer');
+var reportsAdmin = require('./routes/reportsAdmin');
 // var users = require('./routes/users');
 
 
@@ -39,7 +43,10 @@ app.use(function (req, res, next) {
 
 app.use('/userauth',loginRoutes);
 app.use('/userprofile',userprofile);
-// app.use('/getprofile',userprofile);
+app.use('/reports',reports);
+app.use('/listofcustomers',listofcustomers);
+app.use('/editcustomer',editcustomer);
+app.use('/reportsAdmin',reportsAdmin);
 // app.use('/users',users);
 app.use('/', appRoutes);
 

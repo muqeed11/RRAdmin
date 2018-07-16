@@ -12,42 +12,52 @@ export class ServerService {
  }
 
 
-  getReport(rid:string,userid:string){
-   return this.http.get('./../assets/sampleJSON/showReport.json');
+  getReport(body: any[]){
+
+   // console.log(body)
+   //  const body1 = JSON.stringify(body)
+   //  console.log(body1)
+
+    // return this.http.get('./../assets/sampleJSON/showReport.json');
+   return this.http.post('http://192.168.134.1:3000/reportsAdmin/showreportAdmin',body);
   }
 
-  getUserInformation(userid:string){
-   return this.http.get('./../assets/sampleJSON/userreports.json')
+  getUserInformation(userid:any[]){
+   return this.http.post('http://192.168.134.1:3000/editcustomer/customerid',userid)
   }
 
   updateUserInformation(userInformation:any[])
   {
+
     // return this.http.post('./../assets/userreports.json',userInformation)
-    return this.http.get('./../assets/sampleJSON/userreports3.json')
+
+    // return this.http.get('./../assets/sampleJSON/userreports3.json')
+    return this.http.post('http://192.168.134.1:3000/editcustomer/customerupdate',userInformation)
   }
 
-  delReport(rid:string,userid:string){
+  delReport(body:any[]){
 
-   const body = { "rid":rid,"userid":userid,"action":"Deleted"}
+   console.log(body)
+   // const body = { "rid":rid,"userid":userid,"action":"Deleted"}
    // return this.http.post('./../assets/sampleJSON/userreports2.json',body)
-   return this.http.get('./../assets/sampleJSON/userreports2.json')
+   return this.http.post('http://192.168.134.1:3000/reportsAdmin/delreportAdmin',body);
     //@Server side : if successful , call geruserinformation service and send the data
   }
 
 
-  approveReport(rid:string,userid:string){
-    const body = { "rid":rid,"userid":userid,"action":"Deleted"}
+  approveReport(body:any[]){
+    // const body = { "rid":rid,"userid":userid,"action":"Deleted"}
     // return this.http.post('./../assets/sampleJSON/userreports2.json',body)
-    return this.http.get('./../assets/sampleJSON/userreports.json')
+    return this.http.post('http://192.168.134.1:3000/reportsAdmin/approvereportAdmin',body);
     //@Server side : if successful , call geruserinformation service and send the data
   }
 
 
-  rejReport(rid:string,userid:string){
+  rejReport(body:any[]){
 
-    const body = { "rid":rid,"userid":userid,"action":"Rejected"}
+    // const body = { "rid":rid,"userid":userid,"action":"Rejected"}
     // return this.http.post('./../assets/sampleJSON/userreports.json',body)
-    return this.http.get('./../assets/sampleJSON/userreports2.json')
+    return this.http.post('http://192.168.134.1:3000/reportsAdmin/delreportAdmin',body);
     //@Server side : if successful , call geruserinformation service and send the data
   }
 

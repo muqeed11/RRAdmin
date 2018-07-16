@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Subject} from "rxjs/Subject";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {User} from "../auth/user.model";
+
 
 @Component({
   selector: 'app-users',
@@ -12,6 +14,12 @@ export class UsersComponent implements OnInit {
   constructor(private http:HttpClient) { }
 
   results : any =[] ;
+  userinfo : any=  [
+    {
+      userid:"aa",
+      password: "aa"
+
+    }]
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
    ngOnInit() {
@@ -19,13 +27,18 @@ export class UsersComponent implements OnInit {
        pagingType:'full_numbers',
        pageLength:10
      };
-    this.http.get('./../assets/sampleJSON/userslist.json')
+
+     const headers = new HttpHeaders({'Content-Type':'application/json'});
+     const body=JSON.stringify(this.userinfo);
+
+
+     this.http.post('http://192.168.134.1:3000/listofcustomers/customerdetails',this.userinfo,{headers:headers})
       .subscribe(
         (res)=>
         {
-          this.results = res;
-          this.dtTrigger.next();
+          this.results = res['customerDetails'];
           console.log(this.results);
+          this.dtTrigger.next();
 
         }
       )

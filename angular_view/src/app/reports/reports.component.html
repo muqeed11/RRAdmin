@@ -27,14 +27,14 @@
       <div class="col-md-3">
         <div class="form-group">
           <label for="userid">UserID(Disabled):</label>
-          <input type="text" ngModel class="form-control" [(ngModel)]="userDetails.id" id="userid" disabled placeholder="UserID" name="userid">
+          <input type="text" ngModel class="form-control" [(ngModel)]="customerDetails.userId" id="userid" disabled placeholder="UserID" name="userid">
         </div>
       </div>
 
       <div class="col-md-5">
         <div class="form-group">
           <label class="control-label" for="uname">UserName:</label>
-          <input type="text" ngModel [(ngModel)]="userDetails.name"  class="form-control" id="uname" name="uname" >
+          <input type="text" ngModel [(ngModel)]="customerDetails.customerName"  class="form-control" id="uname" name="uname" >
         </div>
       </div>
       <div class="col-md-4">
@@ -42,7 +42,7 @@
           <label class="control-label" for="email">Email:</label>
           <input type="email" ngModel class="form-control"
                  id="email" placeholder="Enter email"
-                 name="email" [(ngModel)] = "userDetails.email">
+                 name="email" [(ngModel)] = "customerDetails.customerEmail">
         </div>
       </div>
     </div>
@@ -54,8 +54,8 @@
           <label class="control-label">Gender:</label>
           <div class="row">
             <div class="col-md-6">
-              <input type="radio"  id="M" name="gender" value="M" [(ngModel)]="userDetails.gender" > Male
-              <input type="radio"  id="F" name="gender" value="F" [(ngModel)]="userDetails.gender" >Female
+              <input type="radio"  id="M" name="gender" value="Male" [(ngModel)]="customerDetails.gender" >Male
+              <input type="radio"  id="F" name="gender" value="Female" [(ngModel)]="customerDetails.gender" >Female
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
         <div class="form-group">
           <label class="control-label" for="totalreports">Total Reports:</label>
           <input type="text" ngModel class="form-control" id="totalreports"
-                 name="totalreports" [(ngModel)] = "userDetails.totalReports">
+                 name="totalreports" [(ngModel)] = "customerDetails.totalReports">
         </div>
       </div>
 
@@ -73,7 +73,7 @@
         <div class="form-group">
           <label class="control-label" for="regdate">Registration Date:</label>
           <input type="text" ngModel class="form-control" id="regdate"
-                 name="regdate" [(ngModel)] = "userDetails.registrationDate">
+                 name="regdate" [(ngModel)] = "customerDetails.createdDate">
         </div>
       </div>
 
@@ -81,7 +81,7 @@
         <div class="form-group">
           <label class="control-label" for="expdate">Expiry Date:</label>
           <input type="text" ngModel class="form-control" id="expdate"
-                 name="expdate" [(ngModel)]="userDetails.subscriptoinEnds">
+                 name="expdate" [(ngModel)]="customerDetails.validDate">
         </div>
       </div>
     </div>
@@ -91,7 +91,7 @@
         <div class="form-group">
           <label class="control-label" for="area">Area:</label>
           <input type="text" ngModel class="form-control" id="area"
-                 name="area" [(ngModel)]="userDetails.area">
+                 name="area" [(ngModel)]="customerDetails.area">
         </div>
       </div>
 
@@ -99,15 +99,15 @@
         <div class="form-group">
           <label class="control-label" for="city">City:</label>
           <input type="text" ngModel class="form-control" id="city"
-                 name="city" [(ngModel)]="userDetails.city">
+                 name="city" [(ngModel)]="customerDetails.city">
         </div>
       </div>
 
       <div class="col-md-3">
         <div class="form-group">
-          <label class="control-label" for="enum">Emergency Number:</label>
-          <input type="text" ngModel class="form-control" id="enum"
-                 name="enum" [(ngModel)]="userDetails.enum1">
+          <label class="control-label" for="dob">Date Of Birth:</label>
+          <input type="text" ngModel class="form-control" id="dob"
+                 name="dob" [(ngModel)]="customerDetails.dateOfBirth">
         </div>
       </div>
 
@@ -115,7 +115,7 @@
         <div class="form-group">
           <label class="control-label" for="occupation">Occupation:</label>
           <input type="text" ngModel class="form-control" id="occupation"
-                 name="occupation" [(ngModel)]="userDetails.occupation">
+                 name="occupation" [(ngModel)]="customerDetails.occupation">
         </div>
       </div>
     </div>
@@ -126,8 +126,8 @@
           <label class="control-label">Married:</label>
           <div class="row">
             <div class="col-md-8">
-              <input type="radio" id="Married" value="Married" name="married" [(ngModel)]="userDetails.married"> Married
-              <input type="radio" id="Single" value="Single"  name="married" [(ngModel)]="userDetails.married"> Single
+              <input type="radio" id="Married" value="Married" name="married" [(ngModel)]="customerDetails.married"> Married
+              <input type="radio" id="Single" value="Single"  name="married" [(ngModel)]="customerDetails.married"> Single
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@
         <div class="form-group">
           <label class="control-label" for="habits">Personal Habits:</label>
           <input type="text" ngModel class="form-control" id="habits"
-                 name="habits" [(ngModel)]="userDetails.habits">
+                 name="habits" [(ngModel)]="customerDetails.habits">
         </div>
       </div>
 
@@ -146,14 +146,14 @@
         <div class="form-group">
           <label class="control-label" for="dname">Family Doctor Name:</label>
           <input type="text" ngModel class="form-control" id="dname"
-                 name="dname" [(ngModel)]="userDetails.dname">
+                 name="dname" [(ngModel)]="customerDetails.familyDoctor">
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
           <label class="control-label" for="dnum">Family Doctor Number:</label>
           <input type="text" ngModel class="form-control" id="dnum"
-                 name="dnum" [(ngModel)]="userDetails.dnum">
+                 name="dnum" [(ngModel)]="customerDetails.doctorNumber">
         </div>
       </div>
     </div>
@@ -169,30 +169,32 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="content table-responsive table-full-width">
-        <table   class="table table-hover table-striped"  >
+        <table  id="dataTables" class="table table-hover table-striped"  >
           <thead>
           <tr>
             <th>Report ID</th>
             <th>Report Type</th>
-            <th>Report Name</th>
+            <!--<th>Report Name</th>-->
             <th>Report Date</th>
             <th>Status</th>
             <th>Action</th>
+            <th>Reason</th>
 
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let u1 of reportDetails">
-            <td>{{u1.rid}}</td>
-            <td>{{u1.rtype}}</td>
-            <td>{{u1.rname}}</td>
-            <td>{{u1.rdate}}</td>
-            <td>{{u1.status}}</td>
+          <tr *ngFor="let u1 of reportDetails , let i = index" >
+            <td>{{ i + 1 }}</td>
+            <td>{{u1.reportType}}</td>
+            <!--<td>{{u1.reportKey}}</td>-->
+            <td>{{u1.reportDate}}</td>
+            <td>{{u1.reportStatus}}</td>
+            <td>{{u1.reportReason}}</td>
             <td>
-              <button class="btn btn-primary" (click)="showReport(template,u1.rid , userDetails.id)" >View</button>
-              <button class="btn btn-danger" (click)="deleteReport(u1.rid , userDetails.id)" >Delete</button>
-              <button class="btn btn-primary" (click)="rejectReport(reportId , userDetails.id)">Reject</button>
-              <button class="btn btn-primary" (click)="approveReport(reportId , userDetails.id)">Approve</button>
+              <button class="btn btn-primary" (click)="showReport(template,u1._id , i)" >View</button>
+              <!--<button class="btn btn-danger" (click)="deleteReport(u1.reportId)" >Delete</button>-->
+              <!--<button class="btn btn-primary" (click)="rejectReport(u1.reportId)">Reject</button>-->
+              <!--<button class="btn btn-primary" (click)="approveReport(u1.reportId)">Approve</button>-->
             </td>
           </tr>
           </tbody>
@@ -201,7 +203,7 @@
         <!--<img  [src]="reportString" style="width:200px;">-->
         <ng-template #template>
           <div class="modal-header">
-            <h4 class="modal-title pull-left">Report ID: {{reportId}} </h4>
+            <h4 class="modal-title pull-left">Report Type: {{reportType}} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -210,9 +212,17 @@
             <img  [src]="reportString" style="width:550px;">
           </div>
           <div class="modal-footer">
-            <button class="btn btn-danger" (click)="deleteReport(reportId , userDetails.id)" >Delete</button>
-            <button class="btn btn-primary" (click)="rejectReport(reportId , userDetails.id)">Reject</button>
-            <button class="btn btn-primary" (click)="approveReport(reportId , userDetails.id)">Approve</button>
+            <form #f3="ngForm">
+              <label class="control-label" >Reason:</label>
+              <label style="visibility: hidden">{{reportId}}</label>
+              <label style="visibility: hidden">{{indexi}}</label>
+              <input type="text" id="reason" name="reason"
+                     class="form-control" [(ngModel)]="reason">
+              <button class="btn btn-danger" (click)="deleteReport()" >Delete</button>
+              <!--<button class="btn btn-danger" type="submit" >Delete</button>-->
+              <button class="btn btn-primary" (click)="rejectReport()">Reject</button>
+              <button class="btn btn-primary" (click)="approveReport()">Approve</button>
+            </form>
           </div>
         </ng-template>
       </div>
