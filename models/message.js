@@ -1,10 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var schema = new Schema({
-    content: {type:String, required:true},
-    user:{type:Schema.Types.ObjectId,ref:'User'}
+var Messageschema = new Schema({
+    userId:{type:String},
+    messageSub:{type:String},
+    messageContent:{type:String},
+    messageStatus:{type:String},
+    createdDate:{type:Date},
+    lastUpdated:{type:Date}
 
 });
 
-module.exports = mongoose.model('Message',schema);
+module.exports = mongoose.model('Messages',Messageschema);

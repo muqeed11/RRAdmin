@@ -69,7 +69,7 @@ router.post('/delreportAdmin',function(req,res,next){
 
 router.post('/rejreportAdmin',function(req,res,next){
 
-    // console.log("inside delreport admin")
+    console.log("inside rejreportAdmin  admin")
     // console.log(req.body.reportId )
     // console.log(req.body.reportReason )
     // console.log(req.body.reason)

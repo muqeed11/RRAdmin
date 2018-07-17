@@ -17,7 +17,7 @@ router.post('/upload', function (req, res, next){
         const base64data = new Buffer(req.body.reportContent, 'base64');
 
         if(!err) {
-            console.log(ReportFilename)
+            // console.log(ReportFilename)
             fs.writeFile(ReportFilename,base64data, function (err) {
                 if(!err) {
                     res.send({
@@ -50,7 +50,7 @@ router.post('/addreport',function (req,res,next) {
     const tempFolder = "D:/Reports_folder/temp/";
     const permanentFolder = 'D:/Reports_folder/reports/' + req.body.userId + '/';
     const reportFilenamesArray = req.body.reportFileNames.split(",");
-    console.log(reportFilenamesArray);
+    // console.log(reportFilenamesArray);
     mkdirp(permanentFolder,function (err) {
         if(!err)
         {
@@ -114,7 +114,8 @@ router.post('/searchreports',function (req,res,next) {
 
     if(req.body.fromDate && req.body.reportType) {
         Reports.find({userId: req.body.userId , reportType:req.body.reportType,
-        reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate }},function (err,result) {
+        reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate } , reportStatus:'Approved'}
+        ,function (err,result) {
 
             if(!err) f1(result)
             else f2(err)
@@ -126,7 +127,7 @@ router.post('/searchreports',function (req,res,next) {
         //get data if date range is selected
 
         Reports.find({userId: req.body.userId ,
-            reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate }}, function (err,result) {
+            reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate } , reportStatus:'Approved'}, function (err,result) {
 
             if(!err) f1(result)
             else f2(err)
@@ -134,7 +135,7 @@ router.post('/searchreports',function (req,res,next) {
     }
 
    else if(req.body.reportType) {
-        Reports.find({userId: req.body.userId , reportType:req.body.reportType} , function (err,result) {
+        Reports.find({userId: req.body.userId , reportType:req.body.reportType , reportStatus:'Approved'} , function (err,result) {
 
             if(!err) f1(result)
             else f2(err)
@@ -160,7 +161,7 @@ router.post('/searchreports',function (req,res,next) {
 
 router.post('/showreport',function(req,res,next){
 
-    console.log(req.body._id)
+    // console.log(req.body._id)
     Reports.findOne({_id:req.body._id},function (err,result) {
 
         const reportPath = result.reportKey;
@@ -195,7 +196,7 @@ router.post('/generatePDF',function (req,res,next) {
     else
         reportIdObj = req.body.reportIdArray;
 
-    console.log(typeof reportIdObj)
+    // console.log(typeof reportIdObj)
 
         Reports.find({_id: {$in:reportIdObj}}, function (err,result) {
 
@@ -249,7 +250,7 @@ router.post('/generatePDF',function (req,res,next) {
                 .text(customerDetails.userId,450,232)
                 .text(customerDetails.phoneNumber,450,265);
 
-            console.log(customerDetails.customerName)
+            // console.log(customerDetails.customerName)
             // doc.addContent(PDFFilename)
             //fetch report from table
 
@@ -257,7 +258,7 @@ router.post('/generatePDF',function (req,res,next) {
             let yaxis = 120;
             for(let i=0;i<result.length;i++)
             {
-                console.log("customerDetails.customerName" + customerDetails.customerName)
+                // console.log("customerDetails.customerName" + customerDetails.customerName)
 
                 doc.addPage();
                 doc.font('fonts/Antonio-Bold.ttf')

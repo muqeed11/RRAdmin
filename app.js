@@ -14,6 +14,8 @@ var userprofile = require('./routes/userprofile');
 var reports = require('./routes/reports');
 var editcustomer = require('./routes/editcustomer');
 var reportsAdmin = require('./routes/reportsAdmin');
+var dashboardGraphs = require('./routes/dashboardGraphs');
+var sendMessage = require('./routes/SendMessage');
 // var users = require('./routes/users');
 
 
@@ -47,6 +49,8 @@ app.use('/reports',reports);
 app.use('/listofcustomers',listofcustomers);
 app.use('/editcustomer',editcustomer);
 app.use('/reportsAdmin',reportsAdmin);
+app.use('/dashboardGraphs',dashboardGraphs);
+app.use('/sendMessage',sendMessage);
 // app.use('/users',users);
 app.use('/', appRoutes);
 

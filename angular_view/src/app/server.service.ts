@@ -11,6 +11,11 @@ export class ServerService {
    return this.http.post('http://localhost:3000/user',servers);
  }
 
+  sendMessage(body:any[]) {
+    return this.http.post('http://192.168.134.1:3000/SendMessage/messageToCustomer',body);
+
+  }
+
 
   getReport(body: any[]){
 
@@ -57,7 +62,7 @@ export class ServerService {
 
     // const body = { "rid":rid,"userid":userid,"action":"Rejected"}
     // return this.http.post('./../assets/sampleJSON/userreports.json',body)
-    return this.http.post('http://192.168.134.1:3000/reportsAdmin/delreportAdmin',body);
+    return this.http.post('http://192.168.134.1:3000/reportsAdmin/rejreportAdmin',body);
     //@Server side : if successful , call geruserinformation service and send the data
   }
 

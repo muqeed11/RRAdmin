@@ -28,6 +28,7 @@ router.post('/register', function (req, res, next) {
             var userAuth = new Userauth({
                 userId: req.body.userId,
                 password: req.body.password,
+                customerEmail : req.body.customerEmail,
                 customerName:req.body.customerName,
                 active:'Y',
                 createdDate:Date.now(),
@@ -121,7 +122,7 @@ router.post('/updateprofile',function (req, res, next) {
     };
 
     // Userprofile.findOneAndUpdate({userId:req.body.userId},req.body,{new:true},function (err, userinfo) {
-    Userprofile.updateOne({"userId":req.body.userId},{$set:userProfile},function (err, userinfo) {
+    Userprofile.updateOne({userId:req.body.userId},{$set:userProfile},function (err, userinfo) {
 
         if(err){
             return res.json({
