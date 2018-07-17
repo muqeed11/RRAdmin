@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
-import {Form} from "@angular/forms";
+import {Form, NgForm} from "@angular/forms";
+import {ServerService} from "../server.service";
 
 @Component({
   selector: 'app-messagetousers',
@@ -7,14 +8,33 @@ import {Form} from "@angular/forms";
   styleUrls: ['./messagetousers.component.css']
 })
 export class MessagetousersComponent implements OnInit{
-  constructor() {}
+  constructor(private server:ServerService) {}
   ngOnInit(){
     document.getElementById('messageToUser').style.visibility='hidden';
     document.getElementById('messagesSentToUser').style.visibility='hidden';
     document.getElementById('bulkmessagesToUser').style.visibility='hidden';
   }
 
-  messageToUser(form:Form){
+  messageToUser(form:NgForm){
+
+    const userId = form.value.userid;
+    const message = form.value.message;
+
+    const body:any = {"userId":userId , "message" : message} ;
+
+    this.server.sendMessage(body)
+      .subscribe(
+        (res)=>
+        {
+
+          form.resetForm();
+          console.log(res)
+
+
+        }
+      )
+
+
   }
 
   messagesSentToUser(from:Form){}
