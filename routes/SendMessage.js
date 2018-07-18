@@ -41,7 +41,7 @@ router.post('/getMessageList',function (req,res,next) {
 
     console.log(req.body.userId)
 
-    Messages.find({userId:req.body.userId},function (err,result) {
+    Messages.find({userId:req.body.userId , messageStatus:'U'},function (err,result) {
 
         if (err) {
             return res.json({
@@ -63,6 +63,66 @@ router.post('/getMessageList',function (req,res,next) {
 
     })
 
+});
+
+
+router.post('/showMessage',function (req,res,next) {
+
+    console.log(req.body.userId)
+
+    Messages.find({userId:req.body.userId , _id:req.body.msgid},function (err,result) {
+
+        if (err) {
+            return res.json({
+                title: 'An Error Occured',
+                responseStatus:'1',
+                error: err
+            });
+        }
+
+        else {
+            res.status(200).json({
+                userId:req.body.userId,
+                response: 'Messages',
+                responseStatus:'0',
+                Message:result,
+            });
+        }
+
+
+    })
+
 })
+
+
+
+router.post('/deleteMessage',function (req,res,next) {
+
+    // console.log(req.body.userId)
+    // console.log(req.body.msgid)
+
+    Messages.updateOne({userId:req.body.userId , _id:req.body.msgid} , { $set:{messageStatus:'D',lastUpdated:Date.now()}} ,function (err,result) {
+
+        if (err) {
+            return res.json({
+                title: 'An Error Occured while updating message table',
+                responseStatus:'1',
+                error: err
+            });
+        }
+
+        else {
+            res.status(200).json({
+                userId:req.body.userId,
+                response: 'Messages',
+                responseStatus:'0'
+            });
+        }
+
+
+    })
+
+})
+
 
 module.exports = router;

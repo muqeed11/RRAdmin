@@ -19,7 +19,7 @@ const appRoutes: Routes =[
   // { path : 'users', component:UsersComponent,canActivate:[AuthGuard]},
   // { path : 'reports', component:ReportsComponent,canActivate:[AuthGuard]},
   // { path: 'messageToUsers', component:MessagetousersComponent,canActivate:[AuthGuard] }
-
+  // //
   { path : 'dashboard', component:DashboardComponent },
   { path : 'dashboardemp', component:DashboardempComponent},
   { path : 'users', component:UsersComponent},

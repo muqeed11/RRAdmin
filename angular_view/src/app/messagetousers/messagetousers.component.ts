@@ -19,8 +19,9 @@ export class MessagetousersComponent implements OnInit{
 
     const userId = form.value.userid;
     const message = form.value.message;
+    const subject = form.value.subject;
 
-    const body:any = {"userId":userId , "message" : message} ;
+    const body:any = {"userId":userId , "messageSub": subject ,"messageContent" : message } ;
 
     this.server.sendMessage(body)
       .subscribe(

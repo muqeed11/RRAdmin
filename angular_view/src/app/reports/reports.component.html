@@ -211,17 +211,21 @@
           <div class="modal-body">
             <img  [src]="reportString" style="width:550px;">
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer center-block">
             <form #f3="ngForm">
-              <label class="control-label" >Reason:</label>
+              <div class="form-group pull-left">
+                <label for="reason">Reason:</label>
+                <input type="text" id="reason" name="reason"
+                     class="form-group"   [(ngModel)]="reason">
+                <button class="btn btn-danger" (click)="deleteReport()" >Delete</button>
+                <!--<button class="btn btn-danger" type="submit" >Delete</button>-->
+                <button class="btn btn-primary" (click)="rejectReport()">Reject</button>
+                <button class="btn btn-primary" (click)="approveReport()">Approve</button>
+              </div>
+
               <label style="visibility: hidden">{{reportId}}</label>
               <label style="visibility: hidden">{{indexi}}</label>
-              <input type="text" id="reason" name="reason"
-                     class="form-control" [(ngModel)]="reason">
-              <button class="btn btn-danger" (click)="deleteReport()" >Delete</button>
-              <!--<button class="btn btn-danger" type="submit" >Delete</button>-->
-              <button class="btn btn-primary" (click)="rejectReport()">Reject</button>
-              <button class="btn btn-primary" (click)="approveReport()">Approve</button>
+
             </form>
           </div>
         </ng-template>
