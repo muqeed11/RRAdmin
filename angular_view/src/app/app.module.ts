@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from "@angular/common/http";
@@ -21,7 +22,15 @@ import { AdminhomeComponent } from './adminhome/adminhome.component';
 import {DataTablesModule} from "angular-datatables";
 import { MessagetousersComponent } from './messagetousers/messagetousers.component';
 import {ModalModule} from "ngx-bootstrap";
+import { RegisterlabuserComponent } from './registerlabuser/registerlabuser.component';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { LabUploadReportsComponent } from './lab-upload-reports/lab-upload-reports.component';
+import {MaterialModule} from './material.module';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {FileUploadModule } from "ng2-file-upload";
 
+
+// import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 @NgModule({
@@ -36,7 +45,10 @@ import {ModalModule} from "ngx-bootstrap";
     ReportsComponent,
     SidenavbarComponent,
     AdminhomeComponent,
-    MessagetousersComponent
+    MessagetousersComponent,
+    RegisterlabuserComponent,
+    ResetpasswordComponent,
+    LabUploadReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +57,12 @@ import {ModalModule} from "ngx-bootstrap";
     FormsModule,
     AppRoutingModule,
     DataTablesModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    FileUploadModule,
     ModalModule.forRoot()
+  ],
+  exports: [
   ],
   providers: [HttpClientModule,ServerService,AuthService,AuthGuard],
   bootstrap: [AppComponent]

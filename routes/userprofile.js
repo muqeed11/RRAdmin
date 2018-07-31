@@ -10,8 +10,11 @@ router.post('/register', function (req, res, next) {
         customerEmail : req.body.customerEmail,
         gender:req.body.gender,
         createdDate:Date.now(),
+        area:req.body.area,
         city:req.body.city,
-        phoneNumber:req.body.userId,
+        phoneNumber:req.body.phoneNumber,
+        familyDoctor:req.body.doctorName,
+        customerRole : req.body.customerRole,
         lastUpdated:Date.now()
     });
 
@@ -31,6 +34,7 @@ router.post('/register', function (req, res, next) {
                 customerEmail : req.body.customerEmail,
                 customerName:req.body.customerName,
                 active:'Y',
+                customerRole : req.body.customerRole,
                 createdDate:Date.now(),
                 validDate:'NULL',
                 lastUpdated:Date.now()
@@ -63,9 +67,9 @@ router.post('/register', function (req, res, next) {
 router.post('/getprofile', function (req, res, next) {
 
     Userprofile.findOne({userId:req.body.userId}, (err,userinfo) =>{
-        console.log("inside getprofile")
-        console.log(req.body.userId)
-        console.log(userinfo)
+        // console.log("inside getprofile")
+        // console.log(req.body.userId)
+        // console.log(userinfo)
         if (err) {
             return res.json({
                 title: 'An Error Occured',
@@ -79,7 +83,6 @@ router.post('/getprofile', function (req, res, next) {
                     response: 'Customer details',
                     customerName: userinfo.customerName,
                     userId: userinfo.userId,
-                    token: 'testtoken',
                     dateOfBirth : "" + userinfo.dateOfBirth,
                     gender: userinfo.gender,
                     married: "" +userinfo.married,
@@ -91,6 +94,7 @@ router.post('/getprofile', function (req, res, next) {
                     doctorNumber : "" +userinfo.doctorNumber,
                     area :"" + userinfo.area,
                     city : "" + userinfo.city,
+                    token: 'testtoken',
                     responseStatus: '0'
 
 

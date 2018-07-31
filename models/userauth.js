@@ -12,6 +12,7 @@ var UserSchema = new Schema({
     customerName:{type:String,required:true},
     active:{type:String ,required:true},
     createdDate:{type:Date,required:true},
+    customerRole:{type:String},
     validDate:{type:String,required:true},
     lastUpdated:{type:Date,required:true}
 

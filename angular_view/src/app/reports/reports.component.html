@@ -202,7 +202,8 @@
 
         <!--<img  [src]="reportString" style="width:200px;">-->
         <ng-template #template>
-          <div class="modal-header">
+            <div class="modal-content" style="overflow-y: scroll;">
+            <div class="modal-header">
             <h4 class="modal-title pull-left">Report Type: {{reportType}} </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
               <span aria-hidden="true">&times;</span>
@@ -222,14 +223,13 @@
                 <button class="btn btn-primary" (click)="rejectReport()">Reject</button>
                 <button class="btn btn-primary" (click)="approveReport()">Approve</button>
               </div>
-
               <label style="visibility: hidden">{{reportId}}</label>
               <label style="visibility: hidden">{{indexi}}</label>
-
             </form>
           </div>
+          </div>
         </ng-template>
-      </div>
+
     </div>
 
   </div>

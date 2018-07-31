@@ -6,17 +6,30 @@ var Userprofile = require('../models/userprofile');
 var fs = require('fs');
 var fse = require('fs-extra');
 var PDFDocument = require('pdfkit');
-var ObjectId = require('mongodb').ObjectId;
+var multer = require('multer');
+
+//define multer storage
+var store = multer.diskStorage({
+    destination:function (req,file,cb) {
+        const permanentFolder = 'D:/Reports_folder/reports/' + req.body.userId + '/';
+       mkdirp(permanentFolder)
+        cb(null,permanentFolder)
+    },
+    filename:function (req,file,cb) {
+        cb(null,req.body.reportFileNames);
+    }
+});
+var upload = multer({storage:store}).single('file');
 
 
 router.post('/upload', function (req, res, next){
 
-    mkdirp('D:/Reports_folder/temp/', function(err) {
+    // mkdirp('D:/Reports_folder/temp/', function(err) {
          const a = "D:/Reports_folder/temp/";
          const ReportFilename =  a.concat(req.body.reportFilename);
         const base64data = new Buffer(req.body.reportContent, 'base64');
 
-        if(!err) {
+        // if(!err) {
             // console.log(ReportFilename)
             fs.writeFile(ReportFilename,base64data, function (err) {
                 if(!err) {
@@ -32,17 +45,10 @@ router.post('/upload', function (req, res, next){
                     });
 
                 }
-            }); }
-
-            else {
-            res.send({
-                response: "Error while Creating Directory",
-                responseStatus: '1'
             });
+        // }
 
-
-        }
-    });
+    // });
 });
 
 router.post('/addreport',function (req,res,next) {
@@ -63,6 +69,7 @@ router.post('/addreport',function (req,res,next) {
                     reportKey:reportFullPath,
                     reportStatus:"Approved",
                     reportReason:"Auto Approved",
+                    uploadedBy: req.body.uploadedBy,
                     createdDate: Date.now(),
                     lastUpdated:Date.now()
 
@@ -101,11 +108,7 @@ router.post('/addreport',function (req,res,next) {
                 responseStatus:'1',
                 token:"testtoken"
             });
-
         }
-
-
-
     });
 
 });
@@ -293,5 +296,58 @@ router.post('/generatePDF',function (req,res,next) {
 
 });
 
+router.post('/uploadLabReport',function(req,res,next) {
+    const permanentFolder = 'D:/Reports_folder/reports/' + req.body.userId + '/';
+   const reportFilenamesArray = req.body.reportFileNames.split(",");
+
+            for(var i=0;i<reportFilenamesArray.length -1;i++) {
+                let reportFullPath = permanentFolder + reportFilenamesArray[i];
+                const reports = new Reports({
+                    userId:req.body.userId,
+                    reportType:req.body.reportType,
+                    reportDate:req.body.reportDate,
+                    reportKey:reportFullPath,
+                    reportStatus:"Approved",
+                    reportReason:"Auto Approved",
+                    uploadedBy:req.body.uploadedBy,
+                    createdDate: Date.now(),
+                    lastUpdated:Date.now()
+
+                });
+                reports.save(function (err1, result) {
+                    if (err1) {
+                        return res.status(500).json({
+                            title: 'An Error Occured while saving data in reports table',
+                            error: err1,
+                            responseStatus:'1'
+                        });
+                    }
+                });
+            }
+            return res.json({
+                response: 'reports table updated',
+                responseStatus: '0',
+                token:"testtoken"
+            });
+    });
+
+router.post('/fileupload',function (req,res,next) {
+
+            upload(req,res,function (err) {
+                if(err) {
+                    return res.json({
+                        error:err
+                    })
+                }
+                else {
+                    return res.json({
+                        response:"uploaded"
+                    })
+                }
+            });
+
+
+
+});
 module.exports = router;
 

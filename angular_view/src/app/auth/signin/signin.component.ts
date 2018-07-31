@@ -12,6 +12,7 @@ import {User} from "../user.model";
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
+
   res:String;
   userName:String;
    errorMsg : String;

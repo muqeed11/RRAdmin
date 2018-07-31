@@ -13,6 +13,7 @@ var UserSchema = new Schema({
     reportKey:{type:String,required:true},
     reportStatus:{type:String},
     reportReason:{type:String},
+    uploadedBy:{type:String},
     createdDate:{type:Date,required:true},
     lastUpdated:{type:Date,default:Date.now(),required:true}
 

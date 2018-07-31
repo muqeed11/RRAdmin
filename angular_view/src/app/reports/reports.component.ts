@@ -51,7 +51,7 @@ export class ReportsComponent implements OnInit {
 
   updateUserDetails(form:NgForm){
     // console.log(this.customerDetails)
-    console.log(this.customerDetails.dateOfBirth)
+    // console.log(this.customerDetails.dateOfBirth)
 
     this.server.updateUserInformation(this.customerDetails)
       .subscribe(
@@ -60,7 +60,7 @@ export class ReportsComponent implements OnInit {
           this.responseStatus = res['responseStatus']
           // console.log(this.responseStatus)
           if(this.responseStatus == "0") {
-            // window.alert("User details updated..!")
+            window.alert("User details updated..!")
             // form.reset()
             document.getElementById('reportDetailsContainer').style.visibility='hidden'
             document.getElementById('userDetailsContainer').style.visibility='hidden'

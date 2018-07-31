@@ -8,6 +8,9 @@ import {DashboardempComponent} from "./dashboardemp/dashboardemp.component";
 import {UsersComponent} from "./users/users.component";
 import {ReportsComponent} from "./reports/reports.component";
 import {MessagetousersComponent} from "./messagetousers/messagetousers.component";
+import {RegisterlabuserComponent} from "./registerlabuser/registerlabuser.component";
+import {ResetpasswordComponent} from "./resetpassword/resetpassword.component";
+import {LabUploadReportsComponent} from "./lab-upload-reports/lab-upload-reports.component";
 
 const appRoutes: Routes =[
   // { path: '',redirectTo:'/signin', pathMatch:'full'},
@@ -24,9 +27,12 @@ const appRoutes: Routes =[
   { path : 'dashboardemp', component:DashboardempComponent},
   { path : 'users', component:UsersComponent},
   { path : 'reports', component:ReportsComponent},
-  { path: 'messageToUsers', component:MessagetousersComponent  }
+  { path: 'messageToUsers', component:MessagetousersComponent  },
+  { path : 'registerlabuser', component:RegisterlabuserComponent},
+  { path : 'resetPassword', component:ResetpasswordComponent},
+  { path : 'dashboardemp', component:DashboardempComponent},
+  { path : 'labUploadReports', component:LabUploadReportsComponent},
 
-  // { path : 'adminhome', component:AdminhomeComponent},
 
 ];
 

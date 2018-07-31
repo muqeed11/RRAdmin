@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import 'rxjs/Rx';
 import {HttpClient} from "@angular/common/http";
+import {LabUser} from "./auth/labuser.model";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class ServerService {
@@ -10,6 +12,36 @@ export class ServerService {
    // return this.http.post('https://rrdummy-669b4.firebaseio.com/laboure1.json',servers);
    return this.http.post('http://localhost:3000/user',servers);
  }
+
+  validateCustomer(body:any[]) {
+    return this.http.post('http://192.168.134.1:3000/userauth/validateCustomer',body)
+
+  }
+
+  UploadReports(body:any[]) {
+    return this.http.post('http://192.168.134.1:3000/reports/uploadLabReport',body)
+
+  }
+
+
+  uploadFile(fileToUpload:File) {
+   const endpoint = 'http://localhost:3000/labuser/reportUpload';
+   const formData : FormData = new FormData();
+   formData.append('filekey',fileToUpload,fileToUpload.name);
+   return this.http.post(endpoint,formData)
+     .map(() => {return true});
+     // .catch((e) => this.handleError(e));
+  }
+
+  resetPassword(body:any[]) {
+    return this.http.post('http://localhost:3000/userauth/resetPassword',body);
+
+  }
+
+  registerLabUser(labuser:LabUser) {
+    return this.http.post('http://localhost:3000/userprofile/register',labuser);
+
+  }
 
   sendMessage(body:any[]) {
     return this.http.post('http://192.168.134.1:3000/SendMessage/messageToCustomer',body);

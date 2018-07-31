@@ -20,6 +20,7 @@ var schema = new Schema({
         familyDoctor:{type:String},
         doctorNumber:{type:String},
         emergencyNumber:{type:String},
+        customerRole:{type:String},
         lastUpdated:{type:Date,default:Date.now,required:true}
 
 });

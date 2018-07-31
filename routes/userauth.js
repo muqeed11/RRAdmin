@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 var Userauth = require('../models/userauth');
-
+var Reports = require('../models/reports');
 router.post('/signin', function (req, res, next){
 
     Userauth.findOne({userId:req.body.userId}, (err,userinfo) =>{
 
-        console.log(req.body.userId)
+        console.log("inside signin : Error " + err + " Userinfo: " + userinfo)
 
         if(err){
             return res.status(500).json({
@@ -42,10 +42,6 @@ router.post('/signin', function (req, res, next){
 
         });
     });
-
-
-    // res.redirect('/');
-
 });
 
 
@@ -91,6 +87,62 @@ router.post('/resetPassword',function (req,res,next) {
 
     });
 
-})
+
+
+});
+
+    router.post('/validateCustomer',function (req,res,next) {
+    console.log(req.body.customerId)
+
+        Userauth.findOne({userId:req.body.customerId}, (err,userinfo) => {
+            console.log("After userauth " + userinfo)
+
+        if(userinfo) {
+            if((userinfo.validDate === "NULL") || (userinfo.validDate < Date.now())) {
+                // InsertReport(userinfo,'Valid')
+                return res.json({
+                    responseStatus : '0',
+                    response: 'Valid User'
+                    })
+            }
+            else {
+                console.log("Customer subscription ended")
+                return res.json({
+                    responseStatus : '1',
+                    response: 'Customer subscription ended'
+                })
+            }
+        }
+        else {
+            // check whether user has already reports uploaded in reports table
+
+            console.log(req.body.customerId)
+            Reports.findOne({userId:req.body.customerId}, function (err,result) {
+                console.log("After reports " + userinfo)
+
+                if(result) {
+                    return res.json({
+                        responseStatus : '2',
+                        response: 'Valid User'
+                    })
+                }
+                else
+                {
+                    return res.json({
+                        responseStatus : '3',
+                        response: 'New Customer, Please collect subscription fee.'
+                    })
+                }
+
+            });
+
+
+
+        }
+    });
+
+
+});
+
 
 module.exports = router;

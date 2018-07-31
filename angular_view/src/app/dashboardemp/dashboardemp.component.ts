@@ -1,4 +1,4 @@
-import {Component, NgModule, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit, TemplateRef} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import * as Chart from "chart.js";
 
@@ -82,4 +82,7 @@ export class DashboardempComponent implements OnInit {
       );
   }
 
+  buttonclicked(template: TemplateRef<any>) {
+
+  }
 }
