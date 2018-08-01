@@ -4,12 +4,14 @@ var Userprofile = require('../models/userprofile')
 var Userauth = require('../models/userauth')
 
 router.post('/register', function (req, res, next) {
+
     var userProfile = new Userprofile({
        customerName : req.body.customerName,
        userId : req.body.userId,
         customerEmail : req.body.customerEmail,
         gender:req.body.gender,
         createdDate:Date.now(),
+        validDate:Date.now()+15983902224,
         area:req.body.area,
         city:req.body.city,
         phoneNumber:req.body.phoneNumber,
@@ -36,7 +38,7 @@ router.post('/register', function (req, res, next) {
                 active:'Y',
                 customerRole : req.body.customerRole,
                 createdDate:Date.now(),
-                validDate:'NULL',
+                validDate:Date.now()+15983902224,
                 lastUpdated:Date.now()
             });
             console.log('inside userauth- before save');

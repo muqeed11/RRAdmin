@@ -1,0 +1,117 @@
+<div class="container" >
+
+  <mat-card class="col-xs-12 col-sm-10 col-md-7 col-sm-offset-1 col-sm-offset-2">
+  <div class="row" id="idValidate">
+    <div class="col-xs-12"  >
+        <label> Check mobile number is already has account with Report Racks.</label>
+      <hr>
+      <label for="customerId">Enter customer mobile number:</label>
+     </div>
+
+      <form (ngSubmit)="ValidateCustomer(f2)"  #f2="ngForm" ngNativeValidate>
+        <div class="col-xs-6">
+          <div class="form-group" >
+            <input type="number" id="customerId" name="customerId"
+                   ngModel class="form-control" required >
+          </div>
+        </div>
+          <button class="btn btn-primary" type="submit">Validate</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
+        <br>
+        <!--<div class="row">-->
+          <div class="col-xs-12">
+            <div class="form-group" >
+              <label>{{validErrorMsg}}</label>
+            </div>
+          </div>
+        <!--</div>-->
+      </form>
+    </div>
+  </mat-card>
+
+<mat-card class="col-xs-12 col-md-7 col-sm-10 col-sm-offset-1 col-sm-offset-2" id="reportUpload" style="visibility: hidden">
+  <!--<form  (ngSubmit)="UploadReports(f1)"  #f1="ngForm" ngNativeValidate>-->
+  <form  #f1="ngForm" ngNativeValidate>
+    <div >
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <input type="file"  name="fileUpload"  id="fileUpload"
+               multiple ng2FileSelect [uploader]="uploader" required >
+      </div>
+    </div>
+    <div class="row uploadList" *ngFor="let item of uploader.queue">
+      <div class="col-sm-8">{{item.file.name}}</div>
+    </div>
+  </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <label for="dropdownReports" >Select Report  Type</label>
+          <select id="dropdownReports" class="form-control"  name="dropdownReports"
+                  [(ngModel)]="dropdownReports" required>
+            <option value="" disabled selected>select a Report Type</option>
+            <option *ngFor="let r1 of reportTypes" [value]="r1.type"  >{{r1.type}}</option>
+          </select>
+          <br>
+        </div>
+        <div class="col-xs-5">
+          <div class="form-group">
+            <label for="reportDate">Select Report  Date</label>
+            <input type="date" id="reportDate"  name="reportDate"  [(ngModel)]="reportDate"
+                   class="form-control" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-8" *ngIf = "uploader?.queue?.length>0">
+          <!--<button class="btn btn-primary" type="submit" (click)="uploader.uploadAll()">Upload</button>-->
+          <button class="btn btn-primary" type="submit" (click)="UploadReports()">Upload</button>
+          <button class="btn btn-danger" type="reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</mat-card>
+
+  <!--<form  (ngSubmit)="UploadReports(f1)"  #f1="ngForm" ngNativeValidate>-->
+  <!--<div id="reportUpload2" style="visibility: hidden" >-->
+    <!--<div class="row">-->
+        <!--<div class="col-xs-12">-->
+          <!--<div class="form-group">-->
+          <!--<input type="file" multiple name="files"  [(ngModel)]="files" required>-->
+          <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+          <!--<div class="col-xs-4">-->
+          <!--<label for="dropdownReports" >Select Report  Type</label>-->
+          <!--<select id="dropdownReports2" class="form-control"  name="dropdownReports"-->
+                  <!--[(ngModel)]="dropdownReports" required>-->
+            <!--<option value="" disabled selected>select a Report Type</option>-->
+            <!--<option *ngFor="let r1 of reportTypes" [value]="r1.type"  >{{r1.type}}</option>-->
+          <!--</select>-->
+          <!--<br>-->
+          <!--</div>-->
+          <!--<div class="col-xs-4">-->
+            <!--<div class="form-group">-->
+          <!--<label for="reportDate">Select Report  Date</label>-->
+          <!--<input type="date" id="reportDate2"  name="reportDate"  [(ngModel)]="reportDate"-->
+                 <!--class="form-control" >-->
+            <!--</div>-->
+          <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+    <!--<div class="col-xs-8">-->
+    <!--<button class="btn btn-danger pull-right" type="reset">Reset</button>-->
+    <!--<button class="btn btn-primary pull-right" type="submit">Upload</button>-->
+    <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--</form>-->
+
+</div>
+
+
+

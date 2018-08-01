@@ -14,6 +14,7 @@
             <th>Gender</th>
             <th>TotalReports</th>
             <th>ApprovedReports</th>
+            <th>Customer Type</th>
           <th>Registration Date</th>
             <th>SubscriptoinEnds</th>
           <th>City</th>
@@ -26,8 +27,9 @@
             <td>{{u1.gender}}</td>
             <td>{{u1.TotalReports}}</td>
             <td>{{u1.ApprovedReports}}</td>
-            <td>{{u1.createdDate.toString()}}</td>
-            <td>{{u1.SubscriptoinEnds}}</td>
+            <td>{{u1.customerRole}}</td>
+            <td>{{u1.createdDate.slice(0,10)}}</td>
+            <td>{{u1.validDate.slice(0,10)}}</td>
             <td>{{u1.city}}</td>
           </tr>
           </tbody>

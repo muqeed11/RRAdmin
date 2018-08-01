@@ -13,7 +13,7 @@ var UserSchema = new Schema({
     active:{type:String ,required:true},
     createdDate:{type:Date,required:true},
     customerRole:{type:String},
-    validDate:{type:String,required:true},
+    validDate:{type:Date,required:true},
     lastUpdated:{type:Date,required:true}
 
 });
