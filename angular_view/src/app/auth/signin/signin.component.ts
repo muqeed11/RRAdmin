@@ -24,6 +24,8 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
   onSignin(form: NgForm) {
 
     const userid = form.value.userid;
@@ -35,6 +37,8 @@ export class SigninComponent implements OnInit {
     // const body = {"userName":userid,"password":password};
     // console.log("userid and pwd:" + User.userid + user.password);
      this.authService.signinUser(user);
+
+     form.resetForm();
     // this.errorMsg = this.authService.errorMsg;
     // console.log(this.authService.errorMsg)
 

@@ -5,7 +5,7 @@ var mongooseUniqueValidator = require('mongoose-unique-validator');
 
 var PaymentSchema = new Schema({
     userId:{type:String,required:true},
-    amountPaid:{type:String},
+    customerPlan:{type:String},
     paidDate:{type:Date},
     customerValidDate:{type:Date},
     paidTo:{type:String},
@@ -14,6 +14,6 @@ var PaymentSchema = new Schema({
 
 });
 
-UserSchema.plugin(mongooseUniqueValidator);
+PaymentSchema.plugin(mongooseUniqueValidator);
 
 module.exports = mongoose.model('payments',PaymentSchema);

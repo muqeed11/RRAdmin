@@ -40,7 +40,26 @@ export class MessagetousersComponent implements OnInit{
 
   messagesSentToUser(from:Form){}
 
-  bulkMessages(){}
+  bulkMessages(form:NgForm){
+    const userId = "ALL";
+    const message = form.value.message3;
+    const subject = form.value.subject2;
+
+    const body:any = {"userId":userId , "messageSub": subject ,"messageContent" : message } ;
+    console.log(body)
+
+    this.server.sendMessage(body)
+      .subscribe(
+        (res)=>
+        {
+
+          form.resetForm();
+          console.log(res)
+
+
+        }
+      )
+  }
 
   showMessageToUser(){
     document.getElementById('messagesSentToUser').style.visibility='hidden';

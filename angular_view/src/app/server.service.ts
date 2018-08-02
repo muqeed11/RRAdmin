@@ -13,6 +13,12 @@ export class ServerService {
    return this.http.post('http://localhost:3000/user',servers);
  }
 
+  updatePayments(body:any[]) {
+    return this.http.post('http://192.168.134.1:3000/payments/transactions',body)
+
+  }
+
+
   validateCustomer(body:any[]) {
     return this.http.post('http://192.168.134.1:3000/userauth/validateCustomer',body)
 

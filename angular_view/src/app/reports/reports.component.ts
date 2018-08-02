@@ -21,6 +21,7 @@ export class ReportsComponent implements OnInit {
   reason : string;
   indexi : number;
 
+
   constructor(private http:HttpClient , private server:ServerService ,
               private modalService: BsModalService) { }
 
@@ -41,17 +42,27 @@ export class ReportsComponent implements OnInit {
           document.getElementById('reportDetailsContainer').style.visibility='visible'
           document.getElementById('userDetailsContainer').style.visibility='visible'
           form.resetForm();
-          console.log(res)
-
-          this.customerDetails = res['customerDetails'];
+          if(res['responseStatus']==='0'){
+            this.customerDetails = res['customerDetails'];
             this.reportDetails = res['reportDetails']
+          }
+          else
+            if(res['responseStatus']==='1'){
+              this.customerDetails = res['customerDetails'];
+              this.reportDetails = res['reportDetails']
+            }
+            else if(res['responseStatus']=='2') {
+              this.reportDetails = res['reportDetails']
+              this.customerDetails = res['customerDetails'];
+              document.getElementById('reportDetailsContainer').style.visibility='hidden'
+              document.getElementById('userDetailsContainer').style.visibility='hidden'
+              window.alert("Customer details do not exist..!")
+            }
         }
       )
   }
 
   updateUserDetails(form:NgForm){
-    // console.log(this.customerDetails)
-    // console.log(this.customerDetails.dateOfBirth)
 
     this.server.updateUserInformation(this.customerDetails)
       .subscribe(

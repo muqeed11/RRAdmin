@@ -3,6 +3,8 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var Userauth = require('../models/userauth');
 var Reports = require('../models/reports');
+var Payments = require('../models/payments');
+
 router.post('/signin', function (req, res, next){
 
     Userauth.findOne({userId:req.body.userId}, (err,userinfo) =>{
@@ -91,57 +93,57 @@ router.post('/resetPassword',function (req,res,next) {
 
 });
 
-    router.post('/validateCustomer',function (req,res,next) {
+router.post('/validateCustomer',function (req,res,next) {
     console.log(req.body.customerId)
 
         Userauth.findOne({userId:req.body.customerId}, (err,userinfo) => {
-            console.log("After userauth " + userinfo)
-
         if(userinfo) {
-            if((userinfo.validDate === "NULL") || (userinfo.validDate < Date.now())) {
-                // InsertReport(userinfo,'Valid')
-                return res.json({
-                    responseStatus : '0',
-                    response: 'Valid User'
-                    })
-            }
-            else {
+            console.log(userinfo.validDate)
+            if(userinfo.validDate < Date.now()) {
                 console.log("Customer subscription ended")
                 return res.json({
                     responseStatus : '1',
                     response: 'Customer subscription ended'
                 })
             }
+            else {
+                return res.json({
+                    responseStatus : '0',
+                    response: 'Valid User'
+                })
+            }
         }
         else {
-            // check whether user has already reports uploaded in reports table
+            // check whether user has already paid and reports uploaded in reports table
 
             console.log(req.body.customerId)
-            Reports.findOne({userId:req.body.customerId}, function (err,result) {
-                console.log("After reports " + userinfo)
-
-                if(result) {
+            Payments.findOne({userId:req.body.customerId}, function (err,result) {
+                if(!result) {
                     return res.json({
                         responseStatus : '2',
-                        response: 'Valid User'
+                        response: 'New Customer, Please collect subscription fee.'
                     })
                 }
                 else
                 {
-                    return res.json({
-                        responseStatus : '3',
-                        response: 'New Customer, Please collect subscription fee.'
-                    })
+                    if(result.validDate < Date.now())
+                    {
+                        return res.json({
+                            responseStatus : '3',
+                            response: 'Customer subscription ended.'
+                        })
+                    }
+
+                    else {
+                        return res.json({
+                            responseStatus : '0',
+                            response: 'Valid User'
+                        })
+                    }
                 }
-
             });
-
-
-
         }
     });
-
-
 });
 
 

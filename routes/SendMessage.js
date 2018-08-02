@@ -41,7 +41,7 @@ router.post('/getMessageList',function (req,res,next) {
 
     console.log(req.body.userId)
 
-    Messages.find({userId:req.body.userId , messageStatus:'U'},function (err,result) {
+    Messages.find({userId:req.body.userId ,userId:"ALL", messageStatus:'U'},function (err,result) {
 
         if (err) {
             return res.json({
@@ -70,7 +70,7 @@ router.post('/showMessage',function (req,res,next) {
 
     console.log(req.body.userId)
 
-    Messages.find({userId:req.body.userId , _id:req.body.msgid},function (err,result) {
+    Messages.find({userId:req.body.userId,userId:"ALL" , _id:req.body.msgid},function (err,result) {
 
         if (err) {
             return res.json({

@@ -13,12 +13,34 @@ router.post('/customerid',function(req,res,next){
             if(!err1)
             {
                 Reports.find({userId:req.body.userId},function (err2,reportsinfo) {
+                    console.log("reportsinfo",reportsinfo.length)
 
-                    if(!err2) {
+                    if(reportsinfo.length>0) {
+
+                        if (customerinfo) {
+
+                            return res.json({
+                                responseStatus: '0',
+                                customerDetails: customerinfo,
+                                reportDetails: reportsinfo
+                            })
+                        }
+
+                        else {
+                            return res.json({
+                                responseStatus: '1',
+                                response:'No Customer Details,only Reports',
+                                customerDetails:{userId:req.body.userId},
+                                reportDetails: reportsinfo
+                            })
+                        }
+                    }
+                    else {
                         return res.json({
-                            responseStatus: '0',
-                            customerDetails: customerinfo,
-                            reportDetails : reportsinfo
+                            responseStatus: '2',
+                            response:'No reports, No customer details',
+                            customerDetails: {userId:req.body.userId},
+                            reportDetails: reportsinfo
                         })
                     }
 
@@ -27,8 +49,9 @@ router.post('/customerid',function(req,res,next){
 
             }
             else {
+
                 return res.json({
-                    responseStatus: '1',
+                    responseStatus: '3',
                     response: 'An Error Occurred while fetching user details'
                 })
             }

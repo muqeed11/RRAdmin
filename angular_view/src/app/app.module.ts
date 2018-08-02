@@ -28,6 +28,8 @@ import { LabUploadReportsComponent } from './lab-upload-reports/lab-upload-repor
 import {MaterialModule} from './material.module';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FileUploadModule } from "ng2-file-upload";
+import {MatRadioModule} from '@angular/material/radio';
+
 
 
 
@@ -61,7 +63,8 @@ import {FileUploadModule } from "ng2-file-upload";
     MaterialModule,
     BrowserAnimationsModule,
     FileUploadModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    MatRadioModule
   ],
   exports: [
   ],

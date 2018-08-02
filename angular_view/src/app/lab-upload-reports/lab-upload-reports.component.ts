@@ -1,9 +1,11 @@
-import {Component, NgModule} from '@angular/core';
+import {Component, ElementRef, NgModule, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {ServerService} from "../server.service";
 import {ReportTypes} from "../reporttype.model";
 import { FileUploader} from 'ng2-file-upload';
 import {Router} from "@angular/router";
+import {MatRadioModule} from '@angular/material/radio';
+
 
 // const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 const URL = 'http://192.168.134.1:3000/reports/fileupload';
@@ -16,6 +18,10 @@ const URL = 'http://192.168.134.1:3000/reports/fileupload';
 })
 
 export class LabUploadReportsComponent {
+
+  @ViewChild('inputfile')
+    myInputSelectedFile : ElementRef;
+
   uploader: FileUploader = new FileUploader({url: URL})
 
   reportTypes: ReportTypes[] = [
@@ -25,6 +31,10 @@ export class LabUploadReportsComponent {
     {id: 4, type: 'BloodTest'}
   ];
 
+  paymentPlans : string[] = [
+    '500INR(6Months)', '1000INR(1year)'
+  ]
+
   dropdownReports: String;
   customerId: String;
   reportDate: Date;
@@ -33,6 +43,7 @@ export class LabUploadReportsComponent {
   uploadedBy = "LabUser";
   filenameArray: String = "";
   onlyFilename: String;
+  selectedPlan:String;
 
 
   constructor(private server: ServerService,private router:Router) {
@@ -46,13 +57,16 @@ export class LabUploadReportsComponent {
         userId: this.customerId, uploadedBy: this.uploadedBy,
         reportType: this.dropdownReports, reportDate: this.reportDate, reportFileNames: this.filenameArray
       };
+      document.getElementById('reportUpload').style.visibility = 'hidden';
+      // document.getElementById('payments').style.visibility = 'hidden';
       this.server.UploadReports(body)
         .subscribe(
           (res) => {
             if (res['responseStatus'] == "0") {
+              // document.getElementById('reportUpload').style.visibility = 'hidden';
               window.alert("Reports uploaded..!")
+              // console.log(res)
               this.router.navigate(['/dashboard'])
-              document.getElementById('reportUpload').style.visibility = 'hidden';
 
             }
           }
@@ -64,6 +78,7 @@ export class LabUploadReportsComponent {
 
 
   UploadReports() {
+    // console.log("inside uploadreports")
 
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
       this.onlyFilename = this.customerId + '.' + this.dropdownReports + '.' + Date.now() + '.jpg';
@@ -91,14 +106,54 @@ export class LabUploadReportsComponent {
       .subscribe(
         (res) => {
 
-          // console.log(res)
+          console.log(res)
           if (res['responseStatus'] == "0" || "1" || "2" || "3") {
             this.validErrorMsg = res['response']
-            document.getElementById('reportUpload').style.visibility = 'visible';
+            if(this.validErrorMsg==='Valid User') {
+              document.getElementById('reportUpload').style.visibility = 'visible';
+
+            }
+
           }
         }
       )
 
   }
+
+
+  formReset(form:NgForm) {
+
+    form.resetForm();
+    this.validErrorMsg=""
+    document.getElementById('reportUpload').style.visibility = 'hidden';
+
+
+  }
+
+
+  formReset1(form:NgForm) {
+
+    form.resetForm();
+    // this.myInputSelectedFile.nativeElement.value=''
+    this.uploader.queue.splice(0)
+    // document.getElementById('fileUpload')
+    // document.getElementById('reportUpload').style.visibility = 'hidden';
+
+
+  }
+
+  payments() {
+
+    console.log("inside payments")
+    document.getElementById('reportUpload').style.visibility = 'visible';
+    const body:any = {customerId:this.customerId,uploadedBy:this.uploadedBy,customerPlan:this.selectedPlan}
+
+    console.log(body)
+    this.server.updatePayments(body)
+      .subscribe(
+        (res)=> console.log(res)
+      )
+  }
+
 
 }
