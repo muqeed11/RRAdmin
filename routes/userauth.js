@@ -4,6 +4,7 @@ var bcrypt = require('bcryptjs');
 var Userauth = require('../models/userauth');
 var Reports = require('../models/reports');
 var Payments = require('../models/payments');
+var jwt = require('jsonwebtoken');
 
 router.post('/signin', function (req, res, next){
 
@@ -33,13 +34,13 @@ router.post('/signin', function (req, res, next){
                 responseStatus: '2'
             });
         }
-        // // var token = jwt.sign({user: user}, 'secret', {expiresIn: 7200});
+         var token = jwt.sign({user: userinfo}, 'secret', {expiresIn: 7200});
 
         res.status(200).json({
             response:'Login successful',
             customerName:userinfo.customerName,
             userId:userinfo.userId,
-            token:'testtoken',
+            token:token,
              responseStatus: '0'
 
         });

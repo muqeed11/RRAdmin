@@ -1,7 +1,7 @@
 
       <!--<app-header *ngIf="!authService.isAuthenticated()"></app-header>-->
-      <app-header *ngIf="authService.isAuthenticated()"></app-header>
-   <app-sidenavbar *ngIf="!authService.isAuthenticated()"></app-sidenavbar>
+      <app-header *ngIf="!authService.isAuthenticated()"></app-header>
+   <app-sidenavbar *ngIf="authService.isAuthenticated()"></app-sidenavbar>
    <!--<app-sidenavbar *ngIf="authService.isAuthenticated()"></app-sidenavbar>-->
 
   <router-outlet></router-outlet>

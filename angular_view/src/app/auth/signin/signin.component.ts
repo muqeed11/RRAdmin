@@ -16,6 +16,8 @@ export class SigninComponent implements OnInit {
   res:String;
   userName:String;
    errorMsg : String;
+   token : String;
+  customerName:String;
 
  // constructor(private serverService: ServerService) { }
   constructor(private http:HttpClient , private router:Router,
@@ -36,25 +38,28 @@ export class SigninComponent implements OnInit {
 
     // const body = {"userName":userid,"password":password};
     // console.log("userid and pwd:" + User.userid + user.password);
-     this.authService.signinUser(user);
+     this.authService.signinUser(user)
+       .subscribe(
+         data => {
+           console.log(data);
+           this.res = data['responseStatus'];
+           this.token = data['token'];
+           this.customerName = data['customerName'];
+           // console.log(this.res +" "+ this.token + this.customerName)
+           if(this.res ==  '0') {
+             localStorage.setItem('token',data['token'])
+             localStorage.setItem('userId',data['userId'])
+             localStorage.setItem('customerName',data['customerName'])
+
+
+             this.router.navigate(['/dashboard'])
+           }
+           else window.alert('Invalid User')
+           // else this.errorMsg="invalid user"
+         },
+         error=> console.log(error)
+       );
 
      form.resetForm();
-    // this.errorMsg = this.authService.errorMsg;
-    // console.log(this.authService.errorMsg)
-
-       // .subscribe(
-       //   data => {
-       //     console.log(data);
-       //     const res = data['responseStatus'];
-       //     const token = data['token'];
-       //     this.userName = data['userName'];
-       //     console.log(res + token + this.userName)
-       //     if(res ==  '0')
-       //       this.router.navigate(['/dashboard'])
-       //     else this.errorMsg="invalid user"
-       //   },
-       //   error=> console.log(error)
-       // );
-
 }
   }

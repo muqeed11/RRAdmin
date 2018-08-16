@@ -8,15 +8,10 @@ import {Router} from "@angular/router";
 })
 export class HeaderComponent {
 
-  constructor(protected authService:AuthService , private router:Router){
+  constructor(protected authService:AuthService ){
 
   }
 
-  onLogout(){
-    this.authService.logout();
-    this.router.navigate(['signin']);
-  }
-  showDashboard(){
 
-  }
+
 }

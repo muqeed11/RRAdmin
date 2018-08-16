@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {Router} from "@angular/router";
-import {SigninComponent} from "../auth/signin/signin.component";
 
 @Component({
   selector: 'app-sidenavbar',
@@ -19,6 +18,7 @@ export class SidenavbarComponent {
     this.router.navigate(['signin']);
   }
 
-   name1 = this.authService.userName;
+   // name1 = this.signin.customerName;
+  name1 = localStorage.getItem('customerName')
 
 }
