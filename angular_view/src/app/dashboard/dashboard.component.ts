@@ -19,8 +19,13 @@ export class DashboardComponent implements OnInit {
   constructor(private httpService: HttpClient) { }
 
   ngOnInit() {
+
+    const token =localStorage.getItem('token')
+      ? '?token=' + localStorage.getItem('token')
+      : '';
+
     //PIE Chart
-    this.httpService.post('http://192.168.134.1:3000/dashboardGraphs/reportscount',this.body)
+    this.httpService.post('http://192.168.134.1:3000/dashboardGraphs/reportscount'+ token,this.body)
     // this.httpService.get('../../assets/testdata.json')
     // this.httpService.get('http://124.123.32.192:8090/report-count-by-type')
       .subscribe(res => {
@@ -86,7 +91,7 @@ export class DashboardComponent implements OnInit {
     //Bar Chart
     // this.httpService.get('../../assets/testuserbycity.json')
 
-    this.httpService.post('http://192.168.134.1:3000/dashboardGraphs/usercount',this.body)
+    this.httpService.post('http://192.168.134.1:3000/dashboardGraphs/usercount' + token,this.body)
       .subscribe(res => {
           let reports = res['usersbycity'];
           let responseStatus = res['responseStatus'];

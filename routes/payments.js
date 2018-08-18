@@ -3,6 +3,26 @@ var router = express.Router();
 var Payments = require('../models/payments');
 var Userprofile = require('../models/userprofile')
 var Userauth = require('../models/userauth')
+var jwt = require('jsonwebtoken');
+
+
+router.use('/',function (req,res,next) {
+
+    jwt.verify(req.query.token,'secret',function (err,decoded) {
+
+        if(err)
+        {
+            return res.status(401).json({
+                response:'Not Authenticated',
+                responseStatus:'1',
+                error:err
+
+            })
+        }
+        next();
+    })
+
+});
 
 router.post('/transactions',function (req,res,next) {
 

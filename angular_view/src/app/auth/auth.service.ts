@@ -19,12 +19,8 @@ export class AuthService {
 
     const headers = new HttpHeaders({'Content-Type':'application/json'})
 
-    console.log(user);
     const body=JSON.stringify(user);
-    console.log('body' + body)
-    // const user = new User(userid,password)
-    // this.http.post('http://192.168.134.1:8080/MedReports/medstore/login/validateLogin',body)
-     return this.http.post('http://localhost:3000/userauth/signin',body,{headers:headers});
+     return this.http.post('http://192.168.134.1:3000/userauth/signin',body,{headers:headers});
        // .subscribe(
        //   data => {
        //     console.log(data);

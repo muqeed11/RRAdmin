@@ -29,6 +29,7 @@ import {MaterialModule} from './material.module';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FileUploadModule } from "ng2-file-upload";
 import {MatRadioModule} from '@angular/material/radio';
+import { ChangeownpwdComponent } from './changeownpwd/changeownpwd.component';
 
 
 
@@ -51,7 +52,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MessagetousersComponent,
     RegisterlabuserComponent,
     ResetpasswordComponent,
-    LabUploadReportsComponent
+    LabUploadReportsComponent,
+    ChangeownpwdComponent
   ],
   imports: [
     BrowserModule,

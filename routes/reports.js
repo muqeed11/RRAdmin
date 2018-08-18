@@ -7,6 +7,28 @@ var fs = require('fs');
 var fse = require('fs-extra');
 var PDFDocument = require('pdfkit');
 var multer = require('multer');
+var jwt = require('jsonwebtoken');
+
+
+router.use('/',function (req,res,next) {
+
+    jwt.verify(req.query.token,'secret',function (err,decoded) {
+
+        if(err)
+        {
+            return res.status(401).json({
+                response:'Not Authenticated',
+                responseStatus:'1',
+                error:err
+
+            })
+        }
+        next();
+    })
+
+});
+
+
 
 //define multer storage
 var store = multer.diskStorage({
@@ -335,13 +357,18 @@ router.post('/fileupload',function (req,res,next) {
 
             upload(req,res,function (err) {
                 if(err) {
+                    console.log('report uploaded..!' , err)
+
                     return res.json({
                         error:err
                     })
                 }
                 else {
+                    console.log('report uploaded..!')
                     return res.json({
-                        response:"uploaded"
+                        response:"uploaded",
+                        responseStatus: '0'
+
                     })
                 }
             });

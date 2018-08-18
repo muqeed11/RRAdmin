@@ -1,12 +1,29 @@
 var express = require('express');
 var router = express.Router();
-var Userprofile = require('../models/userprofile')
+var Userprofile = require('../models/userprofile');
+var jwt = require('jsonwebtoken');
+
+router.use('/',function (req,res,next) {
+
+    jwt.verify(req.query.token,'secret',function (err,decoded) {
+
+        if(err)
+        {
+            return res.status(401).json({
+                response:'Not Authenticated'
+            })
+        }
+        next();
+    })
+
+});
+
+
 
 router.post('/customerdetails', function (req, res, next) {
 
     Userprofile.find(function(err,userinfo) {
-        // console.log("inside listofcustomers")
-        // console.log(userinfo)
+
         if (err) {
             return res.json({
                 title: 'An Error Occured',
@@ -16,8 +33,7 @@ router.post('/customerdetails', function (req, res, next) {
         }
 
         else {
-            console.log(Date.now());
-            console.log(Date.now()+15983902224);
+
             res.status(200).json({
                 response: 'Customer details',
                 customerDetails:userinfo,

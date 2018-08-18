@@ -6,6 +6,26 @@ var Userprofile = require('../models/userprofile');
 var fs = require('fs');
 var fse = require('fs-extra');
 var PDFDocument = require('pdfkit');
+var jwt = require('jsonwebtoken');
+
+
+router.use('/',function (req,res,next) {
+
+    jwt.verify(req.query.token,'secret',function (err,decoded) {
+
+        if(err)
+        {
+            return res.status(401).json({
+                response:'Not Authenticated',
+                responseStatus:'1',
+                error:err
+
+            })
+        }
+        next();
+    })
+
+});
 
 router.post('/showreportAdmin',function(req,res,next){
 

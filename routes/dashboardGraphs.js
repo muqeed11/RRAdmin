@@ -2,7 +2,26 @@ var express = require('express');
 var router = express.Router();
 var Reports = require('../models/reports');
 var Userprofile = require('../models/userprofile');
+var jwt = require('jsonwebtoken');
 
+
+router.use('/',function (req,res,next) {
+
+    jwt.verify(req.query.token,'secret',function (err,decoded) {
+
+        if(err)
+        {
+            return res.status(401).json({
+                response:'Not Authenticated',
+                responseStatus:'1',
+                error:err
+
+            })
+        }
+        next();
+    })
+
+});
 
 router.post('/usercount',function (req,res,next) {
     Userprofile.aggregate([{ $group:{_id:"$city", citycount:{$sum:1}}}] , function (err,result) {
@@ -44,7 +63,7 @@ router.post('/reportscount',function (req,res,next) {
 
     })
 
-})
+});
 
 module.exports = router;
 

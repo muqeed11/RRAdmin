@@ -1,6 +1,26 @@
 var express = require('express');
 var router = express.Router();
 var Messages = require('../models/message');
+var jwt = require('jsonwebtoken');
+
+
+router.use('/',function (req,res,next) {
+
+    jwt.verify(req.query.token,'secret',function (err,decoded) {
+
+        if(err)
+        {
+            return res.status(401).json({
+                response:'Not Authenticated',
+                responseStatus:'1',
+                error:err
+
+            })
+        }
+        next();
+    })
+
+});
 
 router.post('/messageToCustomer',function (req,res,next) {
     console.log(req.body.userId)

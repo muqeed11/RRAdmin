@@ -19,7 +19,7 @@ export class UsersComponent implements OnInit {
       userid:"aa",
       password: "aa"
 
-    }]
+    }];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
    ngOnInit() {
@@ -30,9 +30,11 @@ export class UsersComponent implements OnInit {
 
      const headers = new HttpHeaders({'Content-Type':'application/json'});
      const body=JSON.stringify(this.userinfo);
+     const token =localStorage.getItem('token')
+       ? '?token=' + localStorage.getItem('token')
+       : '';
 
-
-     this.http.post('http://192.168.134.1:3000/listofcustomers/customerdetails',this.userinfo,{headers:headers})
+     this.http.post('http://192.168.134.1:3000/listofcustomers/customerdetails'+ token,this.userinfo,{headers:headers})
       .subscribe(
         (res)=>
         {

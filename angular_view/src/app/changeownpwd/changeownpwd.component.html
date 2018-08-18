@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-3">
+      <div class="form-group">
+        <form (ngSubmit)="passwordReset(f1)" #f1="ngForm">
+          <label for="password">Enter Password :</label>
+          <input class="form-control" type="password" id="password" name="password" ngModel>
+         <br>
+          <label for="newpassword">Enter New Password :</label>
+          <input class="form-control" type="password" id="newpassword" name="newpassword" ngModel>
+          <br>
+          <label for="confirmpassword">Confirm Password :</label>
+          <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" ngModel>
+          <br>
+          <button class="btn btn-primary" type="submit">Reset Password</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

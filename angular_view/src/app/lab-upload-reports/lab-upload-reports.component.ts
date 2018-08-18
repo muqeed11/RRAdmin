@@ -1,14 +1,17 @@
-import {Component, ElementRef, NgModule, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {ServerService} from "../server.service";
 import {ReportTypes} from "../reporttype.model";
 import { FileUploader} from 'ng2-file-upload';
 import {Router} from "@angular/router";
-import {MatRadioModule} from '@angular/material/radio';
 
 
 // const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
-const URL = 'http://192.168.134.1:3000/reports/fileupload';
+
+var token =localStorage.getItem('token')
+  ? '?token=' + localStorage.getItem('token')
+  : '';
+const URL = 'http://192.168.134.1:3000/reports/fileupload'+token;
 
 
 @Component({
@@ -53,6 +56,9 @@ export class LabUploadReportsComponent {
 
 
     this.uploader.onCompleteAll = () => {
+
+
+
       const body: any = {
         userId: this.customerId, uploadedBy: this.uploadedBy,
         reportType: this.dropdownReports, reportDate: this.reportDate, reportFileNames: this.filenameArray
@@ -69,6 +75,7 @@ export class LabUploadReportsComponent {
               this.router.navigate(['/dashboard'])
 
             }
+            else window.alert(res['response'])
           }
         )
 

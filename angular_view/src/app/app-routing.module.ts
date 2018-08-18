@@ -11,10 +11,11 @@ import {MessagetousersComponent} from "./messagetousers/messagetousers.component
 import {RegisterlabuserComponent} from "./registerlabuser/registerlabuser.component";
 import {ResetpasswordComponent} from "./resetpassword/resetpassword.component";
 import {LabUploadReportsComponent} from "./lab-upload-reports/lab-upload-reports.component";
+import {ChangeownpwdComponent} from "./changeownpwd/changeownpwd.component";
 
 const appRoutes: Routes =[
-  { path: '',redirectTo:'/signin', pathMatch:'full'},
-  // { path: '',redirectTo:'/dashboard', pathMatch:'full'},
+  // { path: '',redirectTo:'/signin', pathMatch:'full'},
+  { path: '',redirectTo:'/dashboard', pathMatch:'full'},
   { path: 'signin', component: SigninComponent},
   { path: 'signup',component:SignupComponent},
   { path : 'dashboard', component:DashboardComponent ,canActivate:[AuthGuard]},
@@ -24,6 +25,7 @@ const appRoutes: Routes =[
   { path: 'messageToUsers', component:MessagetousersComponent,canActivate:[AuthGuard] },
   { path : 'registerlabuser', component:RegisterlabuserComponent ,canActivate:[AuthGuard]},
   { path : 'resetPassword', component:ResetpasswordComponent ,canActivate:[AuthGuard]},
+  { path : 'changeownpassword', component:ChangeownpwdComponent ,canActivate:[AuthGuard]},
   { path : 'dashboardemp', component:DashboardempComponent ,canActivate:[AuthGuard]},
   { path : 'labUploadReports', component:LabUploadReportsComponent ,canActivate:[AuthGuard]}
   // //

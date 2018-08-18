@@ -6,11 +6,14 @@ var Reports = require('../models/reports');
 var Payments = require('../models/payments');
 var jwt = require('jsonwebtoken');
 
+
 router.post('/signin', function (req, res, next){
+
 
     Userauth.findOne({userId:req.body.userId}, (err,userinfo) =>{
 
-        console.log("inside signin : Error " + err + " Userinfo: " + userinfo)
+        var token = jwt.sign({user: userinfo}, 'secret', {expiresIn: 7200});
+
 
         if(err){
             return res.status(500).json({
@@ -24,6 +27,7 @@ router.post('/signin', function (req, res, next){
             // return res.status(401).json({
             return res.json({
                 response:' Invalid User',
+                token:"",
                 responseStatus: '1'
             })
         }
@@ -31,10 +35,10 @@ router.post('/signin', function (req, res, next){
         if (!(req.body.password === userinfo.password)) {
             return res.json({
                 response: 'Login failed',
+                token:"",
                 responseStatus: '2'
             });
         }
-         var token = jwt.sign({user: userinfo}, 'secret', {expiresIn: 7200});
 
         res.status(200).json({
             response:'Login successful',
@@ -48,31 +52,12 @@ router.post('/signin', function (req, res, next){
 });
 
 
-router.post('/validateUseridEmail',function (req,res,next) {
-
-    Userauth.findOne({$and:[{userId:req.body.userId }, {customerEmail:req.body.customerEmail}]},function(err,result) {
-        if(result) {
-            res.json({
-                responseStatus : '0',
-                response: 'valid user id and email'
-                })
-        }
-
-        else {
-            res.json({
-                responseStatus : '1',
-                response: 'Invalid user id and email'
-            })
-        }
-    });
-});
-
-
 router.post('/resetPassword',function (req,res,next) {
 
     Userauth.updateOne({userId:req.body.userId},{$set:{password:req.body.newPassword , lastUpdated:Date.now()}},function(err,result) {
+        // var token = jwt.sign({user: result}, 'secret', {expiresIn: 7200});
 
-        console.log(result)
+        // console.log(result)
 
         if(result) {
             res.json({
@@ -94,55 +79,22 @@ router.post('/resetPassword',function (req,res,next) {
 
 });
 
-router.post('/validateCustomer',function (req,res,next) {
-    console.log(req.body.customerId)
+router.post('/validateUseridEmail',function (req,res,next) {
 
-        Userauth.findOne({userId:req.body.customerId}, (err,userinfo) => {
-        if(userinfo) {
-            console.log(userinfo.validDate)
-            if(userinfo.validDate < Date.now()) {
-                console.log("Customer subscription ended")
-                return res.json({
-                    responseStatus : '1',
-                    response: 'Customer subscription ended'
-                })
-            }
-            else {
-                return res.json({
-                    responseStatus : '0',
-                    response: 'Valid User'
-                })
-            }
+    Userauth.findOne({$and:[{userId:req.body.userId }, {customerEmail:req.body.customerEmail}]},function(err,result) {
+
+        if(result) {
+            res.json({
+                responseStatus : '0',
+                response: 'valid user id and email'
+            })
         }
+
         else {
-            // check whether user has already paid and reports uploaded in reports table
-
-            console.log(req.body.customerId)
-            Payments.findOne({userId:req.body.customerId}, function (err,result) {
-                if(!result) {
-                    return res.json({
-                        responseStatus : '2',
-                        response: 'New Customer, Please collect subscription fee.'
-                    })
-                }
-                else
-                {
-                    if(result.validDate < Date.now())
-                    {
-                        return res.json({
-                            responseStatus : '3',
-                            response: 'Customer subscription ended.'
-                        })
-                    }
-
-                    else {
-                        return res.json({
-                            responseStatus : '0',
-                            response: 'Valid User'
-                        })
-                    }
-                }
-            });
+            res.json({
+                responseStatus : '1',
+                response: 'Invalid user id and email'
+            })
         }
     });
 });

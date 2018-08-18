@@ -16,6 +16,11 @@ export class DashboardempComponent implements OnInit {
   chart=[]
 
   ngOnInit() {
+
+    const token =localStorage.getItem('token')
+      ? '?token=' + localStorage.getItem('token')
+      : '';
+
     this.http.get('http://dummy.restapiexample.com/api/v1/employees')
       .subscribe(
         (res)=> {
