@@ -61,8 +61,9 @@ router.post('/getMessageList',function (req,res,next) {
 
     console.log(req.body.userId)
 
-    Messages.find({userId:req.body.userId ,userId:"ALL", messageStatus:'U'},function (err,result) {
+    Messages.find({$or:[{userId:req.body.userId} ,{userId:"ALL"}], messageStatus:'U'} ,function (err,result) {
 
+        console.log(result)
         if (err) {
             return res.json({
                 title: 'An Error Occured',
@@ -88,9 +89,9 @@ router.post('/getMessageList',function (req,res,next) {
 
 router.post('/showMessage',function (req,res,next) {
 
-    console.log(req.body.userId)
+    console.log(req.body.msgid)
 
-    Messages.find({userId:req.body.userId,userId:"ALL" , _id:req.body.msgid},function (err,result) {
+    Messages.find({_id:req.body.msgid},function (err,result) {
 
         if (err) {
             return res.json({

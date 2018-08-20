@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Userprofile = require('../models/userprofile');
 var jwt = require('jsonwebtoken');
+var middlewareObj = require('./middleware');
 
 router.use('/',function (req,res,next) {
 
@@ -9,8 +10,10 @@ router.use('/',function (req,res,next) {
 
         if(err)
         {
-            return res.status(401).json({
-                response:'Not Authenticated'
+            // return res.status(401).json({
+            return res.json({
+                response:'Not Authenticated',
+                error:err
             })
         }
         next();
@@ -20,7 +23,7 @@ router.use('/',function (req,res,next) {
 
 
 
-router.post('/customerdetails', function (req, res, next) {
+router.post('/customerdetails',function (req, res, next) {
 
     Userprofile.find(function(err,userinfo) {
 
@@ -36,6 +39,7 @@ router.post('/customerdetails', function (req, res, next) {
 
             res.status(200).json({
                 response: 'Customer details',
+                responseStatus:'0',
                 customerDetails:userinfo,
                 });
         }

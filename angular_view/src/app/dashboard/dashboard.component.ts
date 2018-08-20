@@ -1,6 +1,8 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import * as Chart from 'chart.js';
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -16,7 +18,7 @@ export class DashboardComponent implements OnInit {
 
   body :any = { "loginId" : "1600", "token":"testtoken" };
 
-  constructor(private httpService: HttpClient) { }
+  constructor(private httpService: HttpClient,private authService:AuthService,private router:Router) { }
 
   ngOnInit() {
 
@@ -29,15 +31,17 @@ export class DashboardComponent implements OnInit {
     // this.httpService.get('../../assets/testdata.json')
     // this.httpService.get('http://124.123.32.192:8090/report-count-by-type')
       .subscribe(res => {
-        //   let reports = Object.keys(res)
-        // let num1 = Object.values(res)
-        //   console.log(reports)
-        // console.log(num1)
+
+          if(res['error'].name == 'TokenExpiredError')
+          {
+            window.alert('Session Expired , Please login again..!')
+            this.authService.logout();
+            this.router.navigate(['signin']);
+          }
+
 
         let result = res['reportsbycount'];
         let responseStatus = res['responseStatus'];
-
-        console.log(result)
         let reports:any =[];
         let number:any =[] ;
         for(let i of result)

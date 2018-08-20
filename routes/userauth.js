@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 var Userauth = require('../models/userauth');
-var Reports = require('../models/reports');
-var Payments = require('../models/payments');
 var jwt = require('jsonwebtoken');
 
 
@@ -14,6 +12,7 @@ router.post('/signin', function (req, res, next){
 
         var token = jwt.sign({user: userinfo}, 'secret', {expiresIn: 7200});
 
+        console.log(userinfo)
 
         if(err){
             return res.status(500).json({
