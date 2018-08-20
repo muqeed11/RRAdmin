@@ -3,6 +3,8 @@ import {NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ServerService} from "../server.service";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-reports',
@@ -20,10 +22,11 @@ export class ReportsComponent implements OnInit {
   reportId : string;
   reason : string;
   indexi : number;
+  serverRes:String;
 
 
   constructor(private http:HttpClient , private server:ServerService ,
-              private modalService: BsModalService) { }
+              private modalService: BsModalService,private authService:AuthService,private router:Router) { }
 
   ngOnInit() {
 
@@ -42,6 +45,12 @@ export class ReportsComponent implements OnInit {
           document.getElementById('reportDetailsContainer').style.visibility='visible'
           document.getElementById('userDetailsContainer').style.visibility='visible'
           form.resetForm();
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              this.checkServerResponse()
+            }
+          }
+          else
           if(res['responseStatus']==='0'){
             this.customerDetails = res['customerDetails'];
             this.reportDetails = res['reportDetails']
@@ -69,7 +78,12 @@ export class ReportsComponent implements OnInit {
         (res)=>
         {
           this.responseStatus = res['responseStatus']
-          // console.log(this.responseStatus)
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              this.checkServerResponse()
+            }
+          }
+          else
           if(this.responseStatus == "0") {
             window.alert("User details updated..!")
             // form.reset()
@@ -92,13 +106,21 @@ export class ReportsComponent implements OnInit {
         (res)=>
         {
           // console.log(res)
-          this.reportString = "data:image/jpg;base64," + res['reportFile'];
-          this.reportType = res['reportType'];
-          this.reportId = reportId;
-          this.indexi = i;
-          this.reason = this.reportDetails[this.indexi].reportReason;
 
-          this.modalRef = this.modalService.show(template);
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              this.checkServerResponse()
+            }
+          }
+          else {
+            this.reportString = "data:image/jpg;base64," + res['reportFile'];
+            this.reportType = res['reportType'];
+            this.reportId = reportId;
+            this.indexi = i;
+            this.reason = this.reportDetails[this.indexi].reportReason;
+
+            this.modalRef = this.modalService.show(template);
+          }
         }
       );
 
@@ -115,11 +137,17 @@ export class ReportsComponent implements OnInit {
         {
           // this.customerDetails = res['userdetails'];
           // this.reportDetails = res['reportdetails'];
-          this.reason = res['reportReason']
-          this.responseStatus = res['reponseStatus']
-          this.reportDetails[this.indexi].reportReason = this.reason
-          this.reportDetails[this.indexi].reportStatus = "Deleted"
-
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              this.checkServerResponse()
+            }
+          }
+          else {
+            this.reason = res['reportReason']
+            this.responseStatus = res['reponseStatus']
+            this.reportDetails[this.indexi].reportReason = this.reason
+            this.reportDetails[this.indexi].reportStatus = "Deleted"
+          }
         }
       )
 
@@ -134,13 +162,18 @@ export class ReportsComponent implements OnInit {
       .subscribe(
         (res)=>
         {
-          // this.customerDetails = res['userdetails'];
-          // this.reportDetails = res['reportdetails'];
-          this.reason = res['reportReason']
-          this.responseStatus = res['reponseStatus']
-          this.reportDetails[this.indexi].reportReason = this.reason
-          this.reportDetails[this.indexi].reportStatus = "Rejected"
 
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              this.checkServerResponse()
+            }
+          }
+          else {
+            this.reason = res['reportReason']
+            this.responseStatus = res['reponseStatus']
+            this.reportDetails[this.indexi].reportReason = this.reason
+            this.reportDetails[this.indexi].reportStatus = "Rejected"
+          }
         }
       )
 
@@ -155,12 +188,25 @@ export class ReportsComponent implements OnInit {
       .subscribe(
         (res)=>
         {
-          this.reason = res['reportReason']
-          this.responseStatus = res['reponseStatus']
-          this.reportDetails[this.indexi].reportReason = this.reason
-          this.reportDetails[this.indexi].reportStatus = "Approved"
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              this.checkServerResponse()
+            }
+          }
+          else {
+            this.reason = res['reportReason']
+            this.responseStatus = res['reponseStatus']
+            this.reportDetails[this.indexi].reportReason = this.reason
+            this.reportDetails[this.indexi].reportStatus = "Approved"
+          }
         }
       )
 
+  }
+
+  checkServerResponse(){
+    window.alert('Session Expired , Please login again..!')
+    this.authService.logout();
+    this.router.navigate(['signin']);
   }
 }

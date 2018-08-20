@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {ServerService} from "../server.service";
 import {LabUser} from "../auth/labuser.model";
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 
 
@@ -12,7 +14,7 @@ import {LabUser} from "../auth/labuser.model";
 })
 export class RegisterlabuserComponent implements OnInit {
 
-  constructor(private server:ServerService) { }
+  constructor(private server:ServerService,private authService:AuthService,private router:Router) { }
 
   ngOnInit() {
   }
@@ -39,6 +41,14 @@ export class RegisterlabuserComponent implements OnInit {
         (res)=>
         {
           const result = res['responseStatus'];
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              window.alert('Session Expired , Please login again..!')
+              this.authService.logout();
+              this.router.navigate(['signin']);
+            }
+          }
+          else
           if(result == '0')
             window.alert("Lab user is created . Login ID :" + labuserid +
               " and Password: " + labuserid + "123")

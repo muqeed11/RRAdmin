@@ -32,12 +32,13 @@ export class DashboardComponent implements OnInit {
     // this.httpService.get('http://124.123.32.192:8090/report-count-by-type')
       .subscribe(res => {
 
-          if(res['error'].name == 'TokenExpiredError')
-          {
+        if(res['responseStatus'] == '99') {
+          if (res['error'].name == 'TokenExpiredError') {
             window.alert('Session Expired , Please login again..!')
             this.authService.logout();
             this.router.navigate(['signin']);
           }
+        }
 
 
         let result = res['reportsbycount'];

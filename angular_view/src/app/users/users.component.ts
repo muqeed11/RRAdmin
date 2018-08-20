@@ -46,16 +46,16 @@ export class UsersComponent implements OnInit {
             this.dtTrigger.next();
           }
 
-          else {
-            if(res['error'].name == 'TokenExpiredError')
-            {
-              window.alert('Session Expired , Please login again..!')
-              this.authService.logout();
-              this.router.navigate(['signin']);
+          else
+            if(res['responseStatus']=='99') {
+              if (res['error'].name == 'TokenExpiredError') {
+                window.alert('Session Expired , Please login again..!')
+                this.authService.logout();
+                this.router.navigate(['signin']);
+              }
             }
-            // console.log(res['error'])
-          }
-
+            else
+              window.alert(res['response'])
         }
       )
   }

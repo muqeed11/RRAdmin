@@ -13,6 +13,7 @@ router.use('/',function (req,res,next) {
             // return res.status(401).json({
             return res.json({
                 response:'Not Authenticated',
+                responseStatus:'99',
                 error:err
             })
         }

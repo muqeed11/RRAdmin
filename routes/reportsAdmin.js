@@ -17,7 +17,7 @@ router.use('/',function (req,res,next) {
         {
             return res.status(401).json({
                 response:'Not Authenticated',
-                responseStatus:'1',
+                responseStatus:'99',
                 error:err
 
             })

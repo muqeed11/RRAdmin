@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {Form, NgForm} from "@angular/forms";
 import {ServerService} from "../server.service";
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-messagetousers',
@@ -8,7 +10,7 @@ import {ServerService} from "../server.service";
   styleUrls: ['./messagetousers.component.css']
 })
 export class MessagetousersComponent implements OnInit{
-  constructor(private server:ServerService) {}
+  constructor(private server:ServerService,private authService:AuthService,private router:Router) {}
   ngOnInit(){
     document.getElementById('messageToUser').style.visibility='hidden';
     document.getElementById('messagesSentToUser').style.visibility='hidden';
@@ -27,10 +29,20 @@ export class MessagetousersComponent implements OnInit{
       .subscribe(
         (res)=>
         {
-
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              window.alert('Session Expired , Please login again..!')
+              this.authService.logout();
+              this.router.navigate(['signin']);
+            }
+          }
+          else
+            if(res['responseStatus'] == '1')
+              window.alert(res['response']);
+          else
+            window.alert('Message sent to customer.')
           form.resetForm();
           console.log(res)
-
 
         }
       )
@@ -52,7 +64,18 @@ export class MessagetousersComponent implements OnInit{
       .subscribe(
         (res)=>
         {
-
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              window.alert('Session Expired , Please login again..!')
+              this.authService.logout();
+              this.router.navigate(['signin']);
+            }
+          }
+          else
+          if(res['responseStatus'] == '1')
+            window.alert(res['response']);
+          else
+            window.alert('Message sent to customer')
           form.resetForm();
           console.log(res)
 
@@ -84,6 +107,10 @@ export class MessagetousersComponent implements OnInit{
     document.getElementById('messagesSentToUser').style.visibility='hidden'
     document.getElementById('bulkmessagesToUser').style.visibility='visible';
 
+
+  }
+
+  checkServerResponse() {
 
   }
 }

@@ -4,6 +4,7 @@ import {ServerService} from "../server.service";
 import {ReportTypes} from "../reporttype.model";
 import { FileUploader} from 'ng2-file-upload';
 import {Router} from "@angular/router";
+import {AuthService} from "../auth/auth.service";
 
 
 // const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
@@ -36,7 +37,7 @@ export class LabUploadReportsComponent {
 
   paymentPlans : string[] = [
     '500INR(6Months)', '1000INR(1year)'
-  ]
+  ];
 
   dropdownReports: String;
   customerId: String;
@@ -49,38 +50,37 @@ export class LabUploadReportsComponent {
   selectedPlan:String;
 
 
-  constructor(private server: ServerService,private router:Router) {
+  constructor(private server: ServerService,private router:Router,private authService:AuthService) {
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers) => {
-    }
-
+    };
 
     this.uploader.onCompleteAll = () => {
-
-
-
       const body: any = {
         userId: this.customerId, uploadedBy: this.uploadedBy,
         reportType: this.dropdownReports, reportDate: this.reportDate, reportFileNames: this.filenameArray
       };
       document.getElementById('reportUpload').style.visibility = 'hidden';
-      // document.getElementById('payments').style.visibility = 'hidden';
       this.server.UploadReports(body)
         .subscribe(
           (res) => {
             if (res['responseStatus'] == "0") {
-              // document.getElementById('reportUpload').style.visibility = 'hidden';
               window.alert("Reports uploaded..!")
-              // console.log(res)
               this.router.navigate(['/dashboard'])
-
             }
-            else window.alert(res['response'])
+            else
+            if(res['responseStatus'] == '99') {
+              if (res['error'].name == 'TokenExpiredError') {
+                window.alert('Session Expired , Please login again..!')
+                this.authService.logout();
+                this.router.navigate(['signin']);
+              }
+            }
+            else
+              window.alert(res['response'])
           }
         )
-
     }
-
   }
 
 
@@ -89,7 +89,7 @@ export class LabUploadReportsComponent {
 
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
       this.onlyFilename = this.customerId + '.' + this.dropdownReports + '.' + Date.now() + '.jpg';
-      this.filenameArray = this.filenameArray + "" + this.onlyFilename + ','
+      this.filenameArray = this.filenameArray + "" + this.onlyFilename + ',';
 
       form.append('userId', this.customerId); //note comma separating key and value
       form.append('uploadedBy', this.uploadedBy); //note comma separating key and value
@@ -118,9 +118,15 @@ export class LabUploadReportsComponent {
             this.validErrorMsg = res['response']
             if(this.validErrorMsg==='Valid User') {
               document.getElementById('reportUpload').style.visibility = 'visible';
-
             }
-
+          }
+          else
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              window.alert('Session Expired , Please login again..!')
+              this.authService.logout();
+              this.router.navigate(['signin']);
+            }
           }
         }
       )

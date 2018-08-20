@@ -14,8 +14,8 @@ router.use('/',function (req,res,next) {
         {
             return res.status(401).json({
                 response:'Not Authenticated',
-                responseStatus:'1',
-                 // error:err
+                responseStatus:'99',
+                  error:err
             })
         }
         next();
@@ -154,7 +154,7 @@ router.post('/resetPassword',function (req,res,next) {
         else {
             res.json({
                 responseStatus : '1',
-                response: 'Error while updating password'
+                response: 'Error while resetting password'
             })
         }
 
