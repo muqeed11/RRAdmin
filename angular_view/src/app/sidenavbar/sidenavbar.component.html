@@ -1,40 +1,42 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid" style="cursor: pointer">
+    <div class="col-xs-12">
+    <div class="navbar-header">
+        <a class="navbar-brand">Welcome </a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          <li><a>{{CustomerName}}</a></li>
+          <li><a>{{CustomerId}}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
 
 <nav class="navbar navbar-default navbar-fixed-left">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand">Report Racks Admin</a>
+      <a class="navbar-brand" *ngIf="authService.isAdmin()">Report Racks Admin</a>
+      <a class="navbar-brand" *ngIf="authService.isLabUser()">ReportRacks Lab User</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-      <!--<li routerLinkActive="active"><a routerLink="/dashboard" *ngIf="authService.isAuthenticated()">Dashboard</a> </li>-->
-      <!--<li routerLinkActive="active"><a routerLink="/users" *ngIf="authService.isAuthenticated()">List of Users</a> </li>-->
-      <!--<li routerLinkActive="active"><a routerLink="/reports" *ngIf="authService.isAuthenticated()">Reports</a> </li>-->
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/dashboard" >Dashboard</a> </li>
-        <li routerLinkActive="active" class="navigation-item"><a routerLink="/users" >List of Users</a></li>
+       <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/dashboard" >Dashboard</a> </li>
+       <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isLabUser()"><a routerLink="/dashboardLabUser">Lab User Dashboard</a> </li>
+       <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/users" >List of Users</a></li>
+       <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdminLabUser()"><a routerLink="/labUploadReports" >Lab-Upload Reports</a> </li>
 
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/reports" >Reports</a> </li>
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/messageToUsers" >Message to Users</a> </li>
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/registerlabuser"  >Create Lab User</a> </li>
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/resetPassword"  >Reset Password</a> </li>
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/changeownpassword"  >Change own Password</a> </li>
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/dashboardemp" >dashboardemp</a> </li>
-      <li routerLinkActive="active" class="navigation-item"><a routerLink="/labUploadReports" >Lab-Upload Reports</a> </li>
-      <li routerLinkActive="active" class="navigation-item">
+      <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/reports" >Reports</a> </li>
+      <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/messageToUsers" >Message to Users</a> </li>
+      <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/registerlabuser"  >Create Lab User</a> </li>
+      <li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/resetPassword"  >Reset Password</a> </li>
+      <li routerLinkActive="active" class="navigation-item" ><a routerLink="/changeownpassword"  >Change own Password</a> </li>
+      <!--<li routerLinkActive="active" class="navigation-item" *ngIf="authService.isAdmin()"><a routerLink="/dashboardemp" >dashboardemp</a> </li>-->
+      <li routerLinkActive="active" class="navigation-item1">
         <a routerLink="/signin" (click) = "onLogout()" >Logout</a> </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid" style="cursor: pointer">
-    <div class="navbar-header">
-      <a class="navbar-brand">Welcome </a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-        <li><a>{{name1}}</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>

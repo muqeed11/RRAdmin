@@ -44,7 +44,7 @@ export class LabUploadReportsComponent {
   reportDate: Date;
   files: any = [];
   validErrorMsg: String;
-  uploadedBy = "LabUser";
+  uploadedBy :String = localStorage.getItem('userId');
   filenameArray: String = "";
   onlyFilename: String;
   selectedPlan:String;
@@ -66,7 +66,7 @@ export class LabUploadReportsComponent {
           (res) => {
             if (res['responseStatus'] == "0") {
               window.alert("Reports uploaded..!")
-              this.router.navigate(['/dashboard'])
+              this.router.navigate(['/dashboardLabUser'])
             }
             else
             if(res['responseStatus'] == '99') {
@@ -75,6 +75,8 @@ export class LabUploadReportsComponent {
                 this.authService.logout();
                 this.router.navigate(['signin']);
               }
+              else
+              window.alert(res['response'])
             }
             else
               window.alert(res['response'])
@@ -85,7 +87,6 @@ export class LabUploadReportsComponent {
 
 
   UploadReports() {
-    // console.log("inside uploadreports")
 
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
       this.onlyFilename = this.customerId + '.' + this.dropdownReports + '.' + Date.now() + '.jpg';
@@ -103,7 +104,6 @@ export class LabUploadReportsComponent {
   }
 
   ValidateCustomer(form: NgForm) {
-    // console.log(form.value.customerId)
 
     this.customerId = form.value.customerId;
 
@@ -113,7 +113,6 @@ export class LabUploadReportsComponent {
       .subscribe(
         (res) => {
 
-          console.log(res)
           if (res['responseStatus'] == "0" || "1" || "2" || "3") {
             this.validErrorMsg = res['response']
             if(this.validErrorMsg==='Valid User') {
@@ -157,11 +156,9 @@ export class LabUploadReportsComponent {
 
   payments() {
 
-    console.log("inside payments")
     document.getElementById('reportUpload').style.visibility = 'visible';
     const body:any = {customerId:this.customerId,uploadedBy:this.uploadedBy,customerPlan:this.selectedPlan}
 
-    console.log(body)
     this.server.updatePayments(body)
       .subscribe(
         (res)=> console.log(res)

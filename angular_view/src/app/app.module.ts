@@ -30,6 +30,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FileUploadModule } from "ng2-file-upload";
 import {MatRadioModule} from '@angular/material/radio';
 import { ChangeownpwdComponent } from './changeownpwd/changeownpwd.component';
+import {AdminGuard} from "./auth/auth.admin-guard.service";
+import { LabuserdashboardComponent } from './labuserdashboard/labuserdashboard.component';
+import { ErrorComponent } from './error/error.component';
+import {ErrorService} from "./error/error.service";
 
 
 
@@ -53,7 +57,9 @@ import { ChangeownpwdComponent } from './changeownpwd/changeownpwd.component';
     RegisterlabuserComponent,
     ResetpasswordComponent,
     LabUploadReportsComponent,
-    ChangeownpwdComponent
+    ChangeownpwdComponent,
+    LabuserdashboardComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +76,7 @@ import { ChangeownpwdComponent } from './changeownpwd/changeownpwd.component';
   ],
   exports: [
   ],
-  providers: [HttpClientModule,ServerService,AuthService,AuthGuard],
+  providers: [HttpClientModule,ServerService,AuthService,AuthGuard,AdminGuard,ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

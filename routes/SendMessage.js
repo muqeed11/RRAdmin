@@ -23,9 +23,9 @@ router.use('/',function (req,res,next) {
 });
 
 router.post('/messageToCustomer',function (req,res,next) {
-    console.log(req.body.userId)
-    console.log(req.body.messageSub)
-    console.log(req.body.messageContent)
+    // console.log(req.body.userId)
+    // console.log(req.body.messageSub)
+    // console.log(req.body.messageContent)
 
     var messages = new Messages({
         userId:req.body.userId,
@@ -59,11 +59,11 @@ router.post('/messageToCustomer',function (req,res,next) {
 
 router.post('/getMessageList',function (req,res,next) {
 
-    console.log(req.body.userId)
+    // console.log(req.body.userId)
 
     Messages.find({$or:[{userId:req.body.userId} ,{userId:"ALL"}], messageStatus:'U'} ,function (err,result) {
 
-        console.log(result)
+        // console.log(result)
         if (err) {
             return res.json({
                 title: 'An Error Occured',
@@ -89,7 +89,7 @@ router.post('/getMessageList',function (req,res,next) {
 
 router.post('/showMessage',function (req,res,next) {
 
-    console.log(req.body.msgid)
+    // console.log(req.body.msgid)
 
     Messages.find({_id:req.body.msgid},function (err,result) {
 

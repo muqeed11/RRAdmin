@@ -13,6 +13,7 @@ router.use('/',function (req,res,next) {
         if(err)
         {
             return res.status(401).json({
+            // return res.json({
                 response:'Not Authenticated',
                 responseStatus:'99',
                   error:err
@@ -29,7 +30,6 @@ router.post('/customerid',function(req,res,next){
             if(!err1)
             {
                 Reports.find({userId:req.body.userId},function (err2,reportsinfo) {
-                    console.log("reportsinfo",reportsinfo.length)
 
                     if(reportsinfo.length>0) {
 
@@ -75,67 +75,46 @@ router.post('/customerid',function(req,res,next){
 });
 
 
-router.post('/customerupdate',function (req,res,next) {
-    console.log("inside customer update backend")
-
-    var userProfile = {
-        customerName : req.body.customerName,
-        userId : req.body.userId,
-        customerEmail : req.body.customerEmail,
-        gender:req.body.gender,
-        dateOfBirth:req.body.dateOfBirth,
-        area:req.body.area,
-        city:req.body.city,
-        phoneNumber:req.body.userId,
-        married:req.body.married,
-        occupation:req.body.occupation,
-        habits:req.body.habits,
-        medicalHistory:req.body.medicalHistory,
-        familyDoctor:req.body.familyDoctor,
-        doctorNumber:req.body.doctorNumber,
-        lastUpdated:Date.now()
-    };
-
-    console.log(userProfile)
-    Userprofile.updateOne({"userId":req.body.userId},{$set:userProfile},function (err, userinfo) {
-        console.log(err)
-
-
-        if(err){
-            return res.json({
-                title: 'An Error Occured',
-                responseStatus:'1',
-                error: err
-            });
-        }else{
-            res.json({
-                response: 'Customer details updated',
-                responseStatus: '0'
-            })
-        }
-    })
-});
-
-// router.post('/validateUseridEmail',function (req,res,next) {
+// router.post('/customerupdate',function (req,res,next) {
+//     // console.log("inside customer update backend")
 //
-//     Userauth.findOne({$and:[{userId:req.body.userId }, {customerEmail:req.body.customerEmail}]},function(err,result) {
+//     var userProfile = {
+//         customerName : req.body.customerName,
+//         userId : req.body.userId,
+//         customerEmail : req.body.customerEmail,
+//         gender:req.body.gender,
+//         dateOfBirth:req.body.dateOfBirth,
+//         area:req.body.area,
+//         city:req.body.city,
+//         phoneNumber:req.body.userId,
+//         married:req.body.married,
+//         occupation:req.body.occupation,
+//         habits:req.body.habits,
+//         medicalHistory:req.body.medicalHistory,
+//         familyDoctor:req.body.familyDoctor,
+//         doctorNumber:req.body.doctorNumber,
+//         lastUpdated:Date.now()
+//     };
 //
-//         if(result) {
+//     // console.log(userProfile)
+//     Userprofile.updateOne({"userId":req.body.userId},{$set:userProfile},function (err, userinfo) {
+//         console.log(err)
+//
+//
+//         if(err){
+//             return res.json({
+//                 title: 'An Error Occured',
+//                 responseStatus:'1',
+//                 error: err
+//             });
+//         }else{
 //             res.json({
-//                 responseStatus : '0',
-//                 response: 'valid user id and email'
+//                 response: 'Customer details updated',
+//                 responseStatus: '0'
 //             })
 //         }
-//
-//         else {
-//             res.json({
-//                 responseStatus : '1',
-//                 response: 'Invalid user id and email'
-//             })
-//         }
-//     });
+//     })
 // });
-
 
 router.post('/resetPassword',function (req,res,next) {
 
@@ -260,10 +239,8 @@ router.post('/validateCustomer',function (req,res,next) {
 router.post('/getprofile', function (req, res, next) {
 
     Userprofile.findOne({userId:req.body.userId}, (err,userinfo) =>{
-        // console.log("inside getprofile")
-        // console.log(req.body.userId)
-        // console.log(userinfo)
-        if (err) {
+
+        if (!userinfo) {
             return res.json({
                 title: 'An Error Occured',
                 responseStatus:'1',
@@ -274,22 +251,8 @@ router.post('/getprofile', function (req, res, next) {
         else {
             res.status(200).json({
                 response: 'Customer details',
-                customerName: userinfo.customerName,
-                userId: userinfo.userId,
-                dateOfBirth : "" + userinfo.dateOfBirth,
-                gender: userinfo.gender,
-                married: "" +userinfo.married,
-                occupation : "" +userinfo.occupation,
-                habits:"" +userinfo.habits,
-                customerEmail : userinfo.customerEmail,
-                medicalHistory : "" +userinfo.medicalHistory,
-                familyDoctor : "" +userinfo.familyDoctor,
-                doctorNumber : "" +userinfo.doctorNumber,
-                area :"" + userinfo.area,
-                city : "" + userinfo.city,
-                responseStatus: '0'
-
-
+                responseStatus: '0',
+                customerDetails:userinfo
             });
         }
 
@@ -316,17 +279,38 @@ router.post('/updateprofile',function (req, res, next) {
         doctorNumber:req.body.doctorNumber,
         lastUpdated:Date.now()
     };
+    // console.log(req.body.userId)
+
 
     // Userprofile.findOneAndUpdate({userId:req.body.userId},req.body,{new:true},function (err, userinfo) {
     Userprofile.updateOne({userId:req.body.userId},{$set:userProfile},function (err, userinfo) {
 
-        if(err){
+        if(!userinfo){
             return res.json({
                 title: 'An Error Occured',
                 responseStatus:'1',
                 error: err
             });
         }else{
+            //update userauth also
+
+            var userAuth = ({
+                customerName:req.body.customerName,
+                lastUpdated:Date.now()
+            });
+            console.log(req.body.userId)
+
+
+            Userauth.updateOne({userId:req.body.userId},{$set:userAuth},function (err, result) {
+                if (!result) {
+                    return res.json({
+                        response: 'An Error Occured..!',
+                        responseStatus: '2',
+                        error: err
+                    });
+                }
+            })
+
             res.json({
                 response: 'Customer details updated',
                 responseStatus: '0'

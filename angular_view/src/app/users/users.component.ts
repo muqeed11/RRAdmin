@@ -42,7 +42,6 @@ export class UsersComponent implements OnInit {
         {
           if(res['responseStatus']=='0') {
             this.results = res['customerDetails'];
-            console.log(this.results);
             this.dtTrigger.next();
           }
 

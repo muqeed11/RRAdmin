@@ -27,9 +27,7 @@ router.use('/',function (req,res,next) {
 router.post('/transactions',function (req,res,next) {
 
     var validPeriod = 0;
-    console.log(req.body.customerPlan)
     if(req.body.customerPlan === '500INR(6Months)')
-         // validPeriod = 15983902224
          validPeriod = 15897600000
     else {
         validPeriod = 31536000000
@@ -49,7 +47,7 @@ router.post('/transactions',function (req,res,next) {
 
     paymentSchema.save(function (err,result) {
 
-        if(err)
+        if(!result)
         {
             return res.json({
                 response: 'Payments failure',
@@ -67,7 +65,7 @@ router.post('/transactions',function (req,res,next) {
             // Userprofile.findOneAndUpdate({userId:req.body.userId},req.body,{new:true},function (err, userinfo) {
             Userprofile.updateOne({userId:req.body.customerId},{$set:userProfile},function (err, userinfo) {
 
-                if(err){
+                if(!userinfo){
                     return res.json({
                         title: 'An Error Occured',
                         responseStatus:'1',
@@ -83,8 +81,7 @@ router.post('/transactions',function (req,res,next) {
                     });
 
                     Userauth.updateOne({userId:req.body.customerId},{$set:userAuth},function (err, result) {
-                        console.log('inside userauth- after save',req.body.customerId,err,result);
-                        if (err) {
+                        if (!result) {
                             return res.json({
                                 title: 'An Error Occured..!',
                                 error: err

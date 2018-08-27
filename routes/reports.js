@@ -16,7 +16,8 @@ router.use('/',function (req,res,next) {
 
         if(err)
         {
-            return res.status(401).json({
+            // return res.status(401).json({
+            return res.json({
                 response:'Not Authenticated',
                 responseStatus:'99',
                 error:err
@@ -33,7 +34,7 @@ router.use('/',function (req,res,next) {
 //define multer storage
 var store = multer.diskStorage({
     destination:function (req,file,cb) {
-        const permanentFolder = 'D:/Reports_folder/reports/' + req.body.userId + '/';
+        const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
        mkdirp(permanentFolder)
         cb(null,permanentFolder)
     },
@@ -46,8 +47,7 @@ var upload = multer({storage:store}).single('file');
 
 router.post('/upload', function (req, res, next){
 
-    // mkdirp('D:/Reports_folder/temp/', function(err) {
-         const a = "D:/Reports_folder/temp/";
+         const a = "public/Reports_folder/TempReports/";
          const ReportFilename =  a.concat(req.body.reportFilename);
         const base64data = new Buffer(req.body.reportContent, 'base64');
 
@@ -75,8 +75,8 @@ router.post('/upload', function (req, res, next){
 
 router.post('/addreport',function (req,res,next) {
 
-    const tempFolder = "D:/Reports_folder/temp/";
-    const permanentFolder = 'D:/Reports_folder/reports/' + req.body.userId + '/';
+    const tempFolder = "public/Reports_folder/TempReports/";
+    const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
     const reportFilenamesArray = req.body.reportFileNames.split(",");
     // console.log(reportFilenamesArray);
     mkdirp(permanentFolder,function (err) {
@@ -120,15 +120,13 @@ router.post('/addreport',function (req,res,next) {
             }
             return res.json({
                 response:"reports uploaded",
-                responseStatus:'0',
-                token:"testtoken"
+                responseStatus:'0'
             });
         }
         else {
             return res.json({
                 response:"Error while creating permanent folder",
-                responseStatus:'1',
-                token:"testtoken"
+                responseStatus:'1'
             });
         }
     });
@@ -212,8 +210,6 @@ router.post('/showreport',function(req,res,next){
 
 router.post('/generatePDF',function (req,res,next) {
 
-
-
     let customerDetails ="";
 
     if(typeof (req.body.reportIdArray) == 'string')
@@ -257,8 +253,8 @@ router.post('/generatePDF',function (req,res,next) {
         function generatePDF() {
             // console.log("customerDetails.customerName" + customerDetails.customerName)
             const doc = new PDFDocument;
-            const PDFFormat = 'D:/Reports_folder/PDFFormat/PDFFormat.jpg';
-            const PDFFilename = 'D:/Reports_folder/PDFReports/' + req.body.userId + 'ReportRacks.' + Date.now() + '.pdf';
+            const PDFFormat = 'public/Reports_folder/PDFFormat/PDFFormat.jpg';
+            const PDFFilename = 'public/Reports_folder/PDFReports/' + req.body.userId + 'ReportRacks.' + Date.now() + '.pdf';
             doc.pipe(fs.createWriteStream(PDFFilename));
             // doc.fontSize(15).text('Report Racks !',100 , 70);
             // doc.text('Selected Reports', {
@@ -266,7 +262,7 @@ router.post('/generatePDF',function (req,res,next) {
             //     align: 'left'
             // });
 
-            doc.image('D:/Reports_folder/PDFFormat/PDFFormat.jpg',20, 10, {scale: .70})
+            doc.image('public/Reports_folder/PDFFormat/PDFFormat.jpg',20, 10, {scale: .70})
                 .text(customerDetails.customerName,170,232)
                 .text(customerDetails.dateOfBirth,170,265)
                 .text(customerDetails.gender,170,295)
@@ -308,19 +304,14 @@ router.post('/generatePDF',function (req,res,next) {
                 PDFURL: PDFFilename
             })
         }
-
-
     });
-
-
-
-
-
 });
 
 router.post('/uploadLabReport',function(req,res,next) {
-    const permanentFolder = 'D:/Reports_folder/reports/' + req.body.userId + '/';
+    const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
    const reportFilenamesArray = req.body.reportFileNames.split(",");
+
+   console.log(req.body)
 
             for(var i=0;i<reportFilenamesArray.length -1;i++) {
                 let reportFullPath = permanentFolder + reportFilenamesArray[i];
@@ -348,8 +339,7 @@ router.post('/uploadLabReport',function(req,res,next) {
             }
             return res.json({
                 response: 'reports table updated',
-                responseStatus: '0',
-                token:"testtoken"
+                responseStatus: '0'
             });
     });
 

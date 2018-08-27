@@ -42,15 +42,18 @@ export class ReportsComponent implements OnInit {
       .subscribe(
         (res)=>
         {
+          console.log(res['customerDetails'])
+          if(res['responseStatus'] == '99') {
+            if (res['error'].name == 'TokenExpiredError') {
+              window.alert('Session Expired , Please login again..!')
+              this.authService.logout();
+              this.router.navigate(['signin']);            }
+          }
+
           document.getElementById('reportDetailsContainer').style.visibility='visible'
           document.getElementById('userDetailsContainer').style.visibility='visible'
           form.resetForm();
-          if(res['responseStatus'] == '99') {
-            if (res['error'].name == 'TokenExpiredError') {
-              this.checkServerResponse()
-            }
-          }
-          else
+
           if(res['responseStatus']==='0'){
             this.customerDetails = res['customerDetails'];
             this.reportDetails = res['reportDetails']

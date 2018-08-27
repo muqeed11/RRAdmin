@@ -37,19 +37,10 @@ export class ServerService {
     var token =localStorage.getItem('token')
       ? '?token=' + localStorage.getItem('token')
       : '';
-    return this.http.post('http://192.168.134.1:3000/reports/uploadLabReport' ,body)
+    return this.http.post('http://192.168.134.1:3000/reports/uploadLabReport'+token ,body)
 
   }
 
-
-  uploadFile(fileToUpload:File) {
-   const endpoint = 'http://192.168.134.1:3000/labuser/reportUpload';
-   const formData : FormData = new FormData();
-   formData.append('filekey',fileToUpload,fileToUpload.name);
-   return this.http.post(endpoint,formData)
-     .map(() => {return true});
-     // .catch((e) => this.handleError(e));
-  }
 
   resetPassword(body:any[]) {
     var token =localStorage.getItem('token')
@@ -105,6 +96,12 @@ export class ServerService {
    return this.http.post('http://192.168.134.1:3000/editcustomer/customerid'+token,userid)
   }
 
+  getLabUserInformation(userid:any[]) {
+    var token =localStorage.getItem('token')
+      ? '?token=' + localStorage.getItem('token')
+      : '';
+    return this.http.post('http://192.168.134.1:3000/editcustomer/getprofile'+token,userid)
+  }
   updateUserInformation(userInformation:any[])
   {
     var token =localStorage.getItem('token')
@@ -113,7 +110,8 @@ export class ServerService {
     // return this.http.post('./../assets/userreports.json',userInformation)
 
     // return this.http.get('./../assets/sampleJSON/userreports3.json')
-    return this.http.post('http://192.168.134.1:3000/editcustomer/customerupdate'+token,userInformation)
+    return this.http.post('http://192.168.134.1:3000/editcustomer/updateprofile'+token,userInformation)
+    // return this.http.post('http://192.168.134.1:3000/editcustomer/customerupdate'+token,userInformation)
   }
 
   delReport(body:any[]){

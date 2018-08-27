@@ -1,0 +1,63 @@
+<div class="container" id="userDetailsContainer" >
+  <div class="header">
+    <h4 class="title">Customer Details</h4>
+  </div>
+  <form>
+    <div class="row" >
+      <div class="col-md-3">
+        <div class="form-group">
+          <!--<label for="userid">UserID(Disabled):</label>-->
+          <p>UserId</p>
+          <label>{{customerDetails.userId}}</label>
+          <!--<input type="text" ngModel class="form-control" [(ngModel)]="customerDetails.userId" id="userid" disabled placeholder="UserID" name="userid">-->
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="form-group">
+          <!--<label class="control-label" for="uname">UserName:</label>-->
+          <!--<input type="text" disabled ngModel [(ngModel)]="customerDetails.customerName"  class="form-control" id="uname" name="uname" >-->
+        <p>User Name:</p>
+          <label>{{customerDetails.customerName}}</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <!--<label class="control-label" for="email">Email:</label>-->
+          <!--<input type="email" ngModel class="form-control" disabled-->
+                 <!--id="email" placeholder="Enter email"-->
+                 <!--name="email" [(ngModel)] = "customerDetails.customerEmail">-->
+
+          <p>Email ID</p>
+          <label>{{customerDetails.customerEmail}}</label>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <!--<label class="control-label" for="area">Area:</label>-->
+          <!--<input type="text" ngModel class="form-control" id="area" disabled-->
+                 <!--name="area" [(ngModel)]="customerDetails.area">-->
+          <p>Area</p>
+          <label>{{customerDetails.area}}</label>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <!--<label class="control-label" for="city">City:</label>-->
+          <!--<input type="text" ngModel class="form-control" id="city" disabled-->
+                 <!--name="city" [(ngModel)]="customerDetails.city">-->
+          <p>City</p>
+          <label>{{customerDetails.city}}</label>
+        </div>
+      </div>
+
+    </div>
+
+
+  </form>
+</div>

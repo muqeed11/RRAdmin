@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 var mongooseUniqueValidator = require('mongoose-unique-validator');
 // mongoose.connect('mongodb://localhost:20717/node-angular');
 
-
 var UserSchema = new Schema({
     userId:{type:String,required:true},
     password:{type:String,required:true},

@@ -4,15 +4,42 @@ var bcrypt = require('bcryptjs');
 var Userauth = require('../models/userauth');
 var jwt = require('jsonwebtoken');
 
+/**
+ * @swagger
+ * resourcePath: /
+ * description: All about rest API
+ * path: /signin
+ * operations:
+ *   -  httpMethod: POST
+ *      summary: Login with username and password
+ *      notes: Returns a user based on username
+ *      responseClass: Userauth
+ *      nickname: login
+ *      consumes:
+ *        - text/html
+ *      parameters:
+ *        - name: userId
+ *          description: Your username
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ *        - name: password
+ *          description: Your password
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ */
+
 
 router.post('/signin', function (req, res, next){
 
 
-    Userauth.findOne({userId:req.body.userId}, (err,userinfo) =>{
+    Userauth.findOne({userId:req.body.userId}, function(err,userinfo) {
 
-        var token = jwt.sign({user: userinfo}, 'secret', {expiresIn: 7200});
+        var token = jwt.sign({user: userinfo}, 'secret');
 
-        console.log(userinfo)
+        // console.log(userinfo)
+        // console.log(err)
 
         if(err){
             return res.status(500).json({
@@ -42,6 +69,7 @@ router.post('/signin', function (req, res, next){
         res.status(200).json({
             response:'Login successful',
             customerName:userinfo.customerName,
+            customerRole:userinfo.customerRole,
             userId:userinfo.userId,
             token:token,
              responseStatus: '0'
@@ -100,3 +128,15 @@ router.post('/validateUseridEmail',function (req,res,next) {
 
 
 module.exports = router;
+
+/**
+ * @swagger
+ * models:
+ *   Userauth:
+ *     id: Userauth
+ *     properties:
+ *       userId:
+ *         type: String
+ *       password:
+ *         type: String
+ */

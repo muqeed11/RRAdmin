@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AuthService} from "../auth.service";
 import {User} from "../user.model";
@@ -35,27 +35,29 @@ export class SigninComponent implements OnInit {
     const user = new User(userid,password);
 
 
-
-    // const body = {"userName":userid,"password":password};
-    // console.log("userid and pwd:" + User.userid + user.password);
      this.authService.signinUser(user)
        .subscribe(
          data => {
-           console.log(data);
            this.res = data['responseStatus'];
            this.token = data['token'];
            this.customerName = data['customerName'];
-           // console.log(this.res +" "+ this.token + this.customerName)
            if(this.res ==  '0') {
-             localStorage.setItem('token',data['token'])
-             localStorage.setItem('userId',data['userId'])
-             localStorage.setItem('customerName',data['customerName'])
-
-
-             this.router.navigate(['/dashboard'])
+             if (data['customerRole'] == 'MobileUser' || data['customerRole'] == null ) {
+               window.alert('You are not authorized to login here.')
+             }
+             else {
+             localStorage.setItem('token', data['token'])
+             localStorage.setItem('userId', data['userId'])
+             localStorage.setItem('customerName', data['customerName'])
+               if(data['customerRole'] == 'Admin') {
+                 localStorage.setItem('role', data['customerRole'])
+                 this.router.navigate(['/dashboard'])
+               }
+               else
+                 this.router.navigate(['/dashboardLabUser'])
+             }
            }
            else window.alert('Invalid User')
-           // else this.errorMsg="invalid user"
          },
          error=> console.log(error)
        );

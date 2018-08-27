@@ -1,5 +1,7 @@
 var express = require('express');
 var path = require('path');
+// var router = require('router')
+var router = express.Router();
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -21,9 +23,46 @@ var payments = require('./routes/payments');
 
 
 var app = express();
+//for swagger
+var argv = require('minimist')(process.argv.slice(2));
+var swagger = require("swagger-node-express");
+var subpath = express();
+app.use(bodyParser());
+app.use("/v1", subpath);
+swagger.setAppHandler(subpath);
+app.use(express.static('dist'));
+swagger.setApiInfo({
+    title: "example API",
+    description: "API to do something, manage something...",
+    termsOfServiceUrl: "",
+    contact: "yourname@something.com",
+    license: "",
+    licenseUrl: ""
+});
 
+subpath.get('/', function (req, res) {
+    res.sendfile(__dirname + '/dist/index.html');
+});
+
+
+swagger.configureSwaggerPaths('', 'api-docs', '');
+
+var domain = 'localhost';
+if(argv.domain !== undefined)
+    domain = argv.domain;
+else
+    console.log('No --domain=xxx specified, taking default hostname "localhost".');
+var applicationUrl = 'http://' + domain;
+swagger.configure(applicationUrl, '1.0.0');
+
+// if (url && url.length > 1) {
+//     url = decodeURIComponent(url[1]);
+// } else {
+//     url = "/api-docs.json";
+// }
+
+//end swagger
 mongoose.connect('mongodb://localhost:27017/node-angular');
-// mongoose.connect('mongodb://localhost/crud');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -72,6 +111,7 @@ app.use('/sendMessage',sendMessage);
 app.use('/payments',payments);
 // app.use('/users',users);
 app.use('/', appRoutes);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
