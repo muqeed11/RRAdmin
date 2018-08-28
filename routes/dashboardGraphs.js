@@ -13,15 +13,15 @@ router.use('/',function (req,res,next) {
         {
             console.log("Inside error")
 
-            return res.status(401).json({
-                title: 'Session expired',
-                error: err
-            })
             // return res.status(401).json({
-            //     response:'Not Authenticated',
-            //     responseStatus:'99',
-            //     error:err
+            //     title: 'Session expired',
+            //     error: err
             // })
+            return res.json({
+                response:'Not Authenticated',
+                responseStatus:'99',
+                error:err
+            })
         }
         next();
     })
@@ -73,7 +73,7 @@ router.post('/labCount',function (req,res,next) {
 
     Reports.aggregate([{$group:{_id:"$uploadedBy",reportcount:{$sum:1}}}],function (err,result) {
 
-        console.log(result)
+        // console.log(result)
 
         if(!err)
         {

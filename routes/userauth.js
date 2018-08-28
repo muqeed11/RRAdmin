@@ -3,7 +3,7 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var Userauth = require('../models/userauth');
 var jwt = require('jsonwebtoken');
-
+var middleware = require("./middleware");
 /**
  * @swagger
  * resourcePath: /
@@ -68,11 +68,11 @@ router.post('/signin', function (req, res, next){
 
         res.status(200).json({
             response:'Login successful',
-            customerName:userinfo.customerName,
-            customerRole:userinfo.customerRole,
+            userName:userinfo.customerName,
+            userRole:userinfo.customerRole,
             userId:userinfo.userId,
             token:token,
-             responseStatus: '0'
+            responseStatus: '0'
 
         });
     });

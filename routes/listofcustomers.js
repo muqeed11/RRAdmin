@@ -24,7 +24,7 @@ router.use('/',function (req,res,next) {
 
 
 
-router.post('/customerdetails',function (req, res, next) {
+router.post('/customerdetails',middlewareObj.isAdmin,function (req, res, next) {
 
     Userprofile.find(function(err,userinfo) {
 

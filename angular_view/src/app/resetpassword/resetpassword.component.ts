@@ -11,7 +11,8 @@ import {Router} from "@angular/router";
 })
 export class ResetpasswordComponent implements OnInit {
 
-  userid:String;
+  userId:String;
+  customerId:String;
   password:String;
   constructor(private server:ServerService,private authService:AuthService,private router:Router) { }
 
@@ -20,12 +21,13 @@ export class ResetpasswordComponent implements OnInit {
 
   passwordReset(form:NgForm) {
 
-    this.userid = form.value.pwdresetid;
+    this.customerId = form.value.pwdresetid;
+    this.userId = localStorage.getItem('userId');
 
-    console.log(this.userid)
-    this.password = this.userid + '123';
+    console.log(this.customerId)
+    this.password = this.customerId + '123';
 
-    let body: any = {"userId": this.userid,"newPassword":this.password }
+    let body: any = {"customerId": this.customerId,"newPassword":this.password , "userId":this.userId }
     console.log(body)
 
     this.server.resetPassword(body)

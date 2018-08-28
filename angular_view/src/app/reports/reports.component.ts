@@ -35,14 +35,14 @@ export class ReportsComponent implements OnInit {
 
   getUserDetails(form:NgForm){
 
-    const userid = form.value.searchuserid;
-    const body:any = {"userId":userid} ;
+    const customerId = form.value.searchuserid;
+    const body:any = {"customerId":customerId,"userId":localStorage.getItem('userId')} ;
 
     this.server.getUserInformation(body)
       .subscribe(
         (res)=>
         {
-          console.log(res['customerDetails'])
+          console.log(res)
           if(res['responseStatus'] == '99') {
             if (res['error'].name == 'TokenExpiredError') {
               window.alert('Session Expired , Please login again..!')
@@ -66,10 +66,18 @@ export class ReportsComponent implements OnInit {
             else if(res['responseStatus']=='2') {
               this.reportDetails = res['reportDetails']
               this.customerDetails = res['customerDetails'];
+              // document.getElementById('reportDetailsContainer').style.visibility='hidden'
+              // document.getElementById('userDetailsContainer').style.visibility='hidden'
+              // window.alert("Customer details do not exist..!")
+            }
+            else if(res['responseStatus']=='3') {
+              this.reportDetails = res['reportDetails']
+              this.customerDetails = res['customerDetails'];
               document.getElementById('reportDetailsContainer').style.visibility='hidden'
               document.getElementById('userDetailsContainer').style.visibility='hidden'
               window.alert("Customer details do not exist..!")
             }
+
         }
       )
   }

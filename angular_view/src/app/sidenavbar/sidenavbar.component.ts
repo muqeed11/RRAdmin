@@ -19,7 +19,7 @@ export class SidenavbarComponent {
   }
 
    // name1 = this.signin.customerName;
-  CustomerName = localStorage.getItem('customerName')
+  CustomerName = localStorage.getItem('userName')
   CustomerId = localStorage.getItem('userId')
 
 }

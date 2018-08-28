@@ -12,8 +12,8 @@ router.use('/',function (req,res,next) {
 
         if(err)
         {
-            return res.status(401).json({
-            // return res.json({
+            // return res.status(401).json({
+            return res.json({
                 response:'Not Authenticated',
                 responseStatus:'99',
                   error:err
@@ -23,58 +23,62 @@ router.use('/',function (req,res,next) {
     })
 
 });
-router.post('/customerid',function(req,res,next){
+router.post('/customerid',function(req,res,next) {
 
-    // console.log(req.body.userId);
-    Userprofile.findOne({userId:req.body.userId},function (err1,customerinfo) {
-            if(!err1)
-            {
-                Reports.find({userId:req.body.userId},function (err2,reportsinfo) {
-
-                    if(reportsinfo.length>0) {
-
-                        if (customerinfo) {
-
-                            return res.json({
-                                responseStatus: '0',
-                                customerDetails: customerinfo,
-                                reportDetails: reportsinfo
-                            })
-                        }
-
-                        else {
-                            return res.json({
-                                responseStatus: '1',
-                                response:'No Customer Details,only Reports',
-                                customerDetails:{userId:req.body.userId},
-                                reportDetails: reportsinfo
-                            })
-                        }
-                    }
-                    else {
+    console.log('userid',req.body.userId);
+    console.log('customerid',req.body.customerId);
+    Userprofile.findOne({userId: req.body.customerId}, function (err1, customerinfo) {
+        if (!err1) {
+            Reports.find({userId: req.body.customerId}, function (err2, reportsinfo) {
+                if (!err2) {
+                    if ((reportsinfo.length > 0) && (customerinfo)) {
                         return res.json({
-                            responseStatus: '2',
-                            response:'No reports, No customer details',
-                            customerDetails: {userId:req.body.userId},
+                            responseStatus: '0',
+                            customerDetails: customerinfo,
+                            reportDetails: reportsinfo
+                        })
+                    }
+                    else if (!(reportsinfo.length > 0) && (customerinfo)) {
+                        return res.json({
+                            responseStatus: '1',
+                            response: 'only Customer Details,No Reports',
+                            customerDetails: customerinfo,
                             reportDetails: reportsinfo
                         })
                     }
 
+                    else if ((reportsinfo.length > 0) && (!customerinfo)) {
+                        return res.json({
+                            responseStatus: '2',
+                            response: 'No Customer Details,Only Reports',
+                            customerDetails: {userId: req.body.customerId},
+                            reportDetails: reportsinfo
+                        })
+                    }
 
-                });
+                    else
+                        return res.json({
+                            responseStatus: '3',
+                            response: 'No reports, No customer details',
+                            customerDetails: {userId: req.body.customerId},
+                            reportDetails: reportsinfo
+                        })
+                }
 
-            }
-            else {
+            });
+        }
+        else {
 
-                return res.json({
-                    responseStatus: '3',
-                    response: 'An Error Occurred while fetching user details'
-                })
-            }
+            return res.json({
+                responseStatus: '4',
+                response: 'An Error occurred',
+                customerDetails: {userId: req.body.customerId}
+            })
+        }
+
     });
+
 });
-
-
 // router.post('/customerupdate',function (req,res,next) {
 //     // console.log("inside customer update backend")
 //
@@ -118,7 +122,7 @@ router.post('/customerid',function(req,res,next){
 
 router.post('/resetPassword',function (req,res,next) {
 
-    Userauth.updateOne({userId:req.body.userId},{$set:{password:req.body.newPassword , lastUpdated:Date.now()}},function(err,result) {
+    Userauth.updateOne({userId:req.body.customerId},{$set:{password:req.body.newPassword , lastUpdated:Date.now()}},function(err,result) {
          // var token = jwt.sign({user: result}, 'secret', {expiresIn: 7200});
 
         // console.log(result)

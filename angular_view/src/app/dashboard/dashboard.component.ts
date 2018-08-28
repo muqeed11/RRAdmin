@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
 
   chart  = [];
 
-  body :any = { "loginId" : "1600", "token":"testtoken" };
+  body :any = { userId : localStorage.getItem('userId') };
 
   constructor(private httpService: HttpClient,private authService:AuthService,
               private router:Router, private errorService:ErrorService) { }

@@ -308,7 +308,7 @@ router.post('/generatePDF',function (req,res,next) {
 });
 
 router.post('/uploadLabReport',function(req,res,next) {
-    const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
+    const permanentFolder = 'public/Reports_folder/Reports/' + req.body.customerId + '/';
    const reportFilenamesArray = req.body.reportFileNames.split(",");
 
    console.log(req.body)
@@ -316,7 +316,7 @@ router.post('/uploadLabReport',function(req,res,next) {
             for(var i=0;i<reportFilenamesArray.length -1;i++) {
                 let reportFullPath = permanentFolder + reportFilenamesArray[i];
                 const reports = new Reports({
-                    userId:req.body.userId,
+                    userId:req.body.customerId,
                     reportType:req.body.reportType,
                     reportDate:req.body.reportDate,
                     reportKey:reportFullPath,

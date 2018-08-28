@@ -40,17 +40,17 @@ export class SigninComponent implements OnInit {
          data => {
            this.res = data['responseStatus'];
            this.token = data['token'];
-           this.customerName = data['customerName'];
+           this.customerName = data['userName'];
            if(this.res ==  '0') {
-             if (data['customerRole'] == 'MobileUser' || data['customerRole'] == null ) {
+             if (data['userRole'] == 'MobileUser' || data['userRole'] == null ) {
                window.alert('You are not authorized to login here.')
              }
              else {
              localStorage.setItem('token', data['token'])
              localStorage.setItem('userId', data['userId'])
-             localStorage.setItem('customerName', data['customerName'])
-               if(data['customerRole'] == 'Admin') {
-                 localStorage.setItem('role', data['customerRole'])
+             localStorage.setItem('userName', data['userName'])
+               if(data['userRole'] == 'Admin') {
+                 localStorage.setItem('role', data['userRole'])
                  this.router.navigate(['/dashboard'])
                }
                else

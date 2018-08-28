@@ -33,7 +33,7 @@ router.post('/register', function (req, res, next) {
         else {
             userProfile.save(function (err, result) {
                 if (err) {
-                    return res.status(500).json({
+                    return res.status(406).json({
                         title: 'An Error Occured',
                         error: err
                     });
@@ -57,7 +57,7 @@ router.post('/register', function (req, res, next) {
                     userAuth.save(function (err, result) {
                         console.log('inside userauth- after save');
                         if (err) {
-                            return res.status(501).json({
+                            return res.status(406).json({
                                 title: 'An Error Occured..!',
                                 error: err
                             });

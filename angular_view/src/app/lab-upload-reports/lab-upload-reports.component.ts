@@ -45,6 +45,7 @@ export class LabUploadReportsComponent {
   files: any = [];
   validErrorMsg: String;
   uploadedBy :String = localStorage.getItem('userId');
+  userId :String = localStorage.getItem('userId');
   filenameArray: String = "";
   onlyFilename: String;
   selectedPlan:String;
@@ -57,7 +58,7 @@ export class LabUploadReportsComponent {
 
     this.uploader.onCompleteAll = () => {
       const body: any = {
-        userId: this.customerId, uploadedBy: this.uploadedBy,
+        customerId: this.customerId, uploadedBy: this.uploadedBy, userId:this.userId,
         reportType: this.dropdownReports, reportDate: this.reportDate, reportFileNames: this.filenameArray
       };
       document.getElementById('reportUpload').style.visibility = 'hidden';
@@ -92,7 +93,7 @@ export class LabUploadReportsComponent {
       this.onlyFilename = this.customerId + '.' + this.dropdownReports + '.' + Date.now() + '.jpg';
       this.filenameArray = this.filenameArray + "" + this.onlyFilename + ',';
 
-      form.append('userId', this.customerId); //note comma separating key and value
+      form.append('customerId', this.customerId); //note comma separating key and value
       form.append('uploadedBy', this.uploadedBy); //note comma separating key and value
       form.append('reportType', this.dropdownReports); //note comma separating key and value
       form.append('reportDate', this.reportDate); //note comma separating key and value
