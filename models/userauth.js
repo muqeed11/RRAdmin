@@ -9,10 +9,10 @@ var UserSchema = new Schema({
     password:{type:String,required:true},
     customerEmail:{type:String},
     customerName:{type:String,required:true},
-    active:{type:String ,required:true},
+    active:{type:String},
     createdDate:{type:Date,required:true},
-    customerRole:{type:String},
-    validDate:{type:Date,required:true},
+    customerRole:{type:String,required:true},
+    validDate:{type:Date},
     lastUpdated:{type:Date,required:true}
 
 });

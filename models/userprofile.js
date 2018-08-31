@@ -12,7 +12,7 @@ var schema = new Schema({
         dateOfBirth:{type:String},
         area:{type:String},
         city:{type:String},
-        phoneNumber:{type:String},
+        phoneNumber:{type:String,required:true},
         married:{type:String},
         occupation:{type:String},
         habits:{type:String},
@@ -20,7 +20,7 @@ var schema = new Schema({
         familyDoctor:{type:String},
         doctorNumber:{type:String},
         emergencyNumber:{type:String},
-        customerRole:{type:String},
+        customerRole:{type:String,required:true},
         lastUpdated:{type:Date,default:Date.now,required:true}
 
 });

@@ -5,25 +5,38 @@ var Userauth = require('../models/userauth');
 var Reports = require('../models/reports');
 var jwt = require('jsonwebtoken');
 var Payments = require('../models/payments');
+var middlewareObj = require('./middleware');
+
 
 router.use('/',function (req,res,next) {
 
     jwt.verify(req.query.token,'secret',function (err,decoded) {
+        // console.log(Date.now())
 
         if(err)
         {
             // return res.status(401).json({
             return res.json({
                 response:'Not Authenticated',
-                responseStatus:'99',
-                  error:err
+                responseStatus:'99'
             })
         }
-        next();
+        else {
+            req.decoded = decoded;
+            if(!(req.decoded.user.userId === req.body.userId))
+            {
+                res.json({
+                    response: 'Please login again..!',
+                    responseStatus:'99'
+                });
+            }
+            else
+                next();
+        }
     })
 
 });
-router.post('/customerid',function(req,res,next) {
+router.post('/customerid',middlewareObj.isAdmin,function(req,res,next) {
 
     console.log('userid',req.body.userId);
     console.log('customerid',req.body.customerId);
@@ -120,10 +133,11 @@ router.post('/customerid',function(req,res,next) {
 //     })
 // });
 
-router.post('/resetPassword',function (req,res,next) {
+router.post('/resetPassword',middlewareObj.isAdmin,function (req,res) {
+    console.log(Date.now())
 
     Userauth.updateOne({userId:req.body.customerId},{$set:{password:req.body.newPassword , lastUpdated:Date.now()}},function(err,result) {
-         // var token = jwt.sign({user: result}, 'secret', {expiresIn: 7200});
+        // console.log(Date.now())
 
         // console.log(result)
 
@@ -146,16 +160,11 @@ router.post('/resetPassword',function (req,res,next) {
 
 
 router.post('/changePassword',function (req,res,next) {
-console.log(req.body.userId , req.body.password)
 
     Userauth.findOne({userId:req.body.userId,password:req.body.password},function (err,result1) {
 
         if(result1) {
             Userauth.updateOne({userId:req.body.userId,password:req.body.password},{$set:{password:req.body.newPassword , lastUpdated:Date.now()}},function(err,result) {
-                // var token = jwt.sign({user: result}, 'secret', {expiresIn: 7200});
-
-                console.log(result)
-
                 if(result) {
                     res.json({
                         responseStatus : '0',
@@ -185,13 +194,12 @@ console.log(req.body.userId , req.body.password)
 });
 
 router.post('/validateCustomer',function (req,res,next) {
-    console.log(req.body.customerId)
 
     Userauth.findOne({userId:req.body.customerId}, (err,userinfo) => {
         // var token = jwt.sign({user: userinfo}, 'secret', {expiresIn: 7200});
 
         if(userinfo) {
-            console.log(userinfo.validDate)
+            // console.log(userinfo.validDate)
             if(userinfo.validDate < Date.now()) {
                 console.log("Customer subscription ended")
                 return res.json({
@@ -244,11 +252,12 @@ router.post('/getprofile', function (req, res, next) {
 
     Userprofile.findOne({userId:req.body.userId}, (err,userinfo) =>{
 
+        // console.log(userinfo)
         if (!userinfo) {
             return res.json({
                 title: 'An Error Occured',
                 responseStatus:'1',
-                error: err
+                error1: userinfo
             });
         }
 
@@ -315,7 +324,7 @@ router.post('/updateprofile',function (req, res, next) {
                 }
             })
 
-            res.json({
+            return res.json({
                 response: 'Customer details updated',
                 responseStatus: '0'
             })

@@ -7,27 +7,39 @@ var fs = require('fs');
 var fse = require('fs-extra');
 var PDFDocument = require('pdfkit');
 var jwt = require('jsonwebtoken');
+var middlewareObj = require('./middleware');
 
 
 router.use('/',function (req,res,next) {
 
     jwt.verify(req.query.token,'secret',function (err,decoded) {
+        // console.log(Date.now())
 
         if(err)
         {
-            return res.status(401).json({
+            // return res.status(401).json({
+            return res.json({
                 response:'Not Authenticated',
-                responseStatus:'99',
-                error:err
-
+                responseStatus:'99'
             })
         }
-        next();
+        else {
+            req.decoded = decoded
+            if(req.decoded.user.userId === req.body.userId)
+                next();
+            else
+            {
+                res.json({
+                    response: 'Please login again..!',
+                    responseStatus:'99'
+                });
+            }
+        }
     })
 
 });
 
-router.post('/showreportAdmin',function(req,res,next){
+router.post('/showreportAdmin',middlewareObj.isAdmin,function(req,res,next){
 
     console.log("inside showreport admin")
     Reports.findOne({_id:req.body.reportId},function (err,result) {
@@ -57,7 +69,7 @@ router.post('/showreportAdmin',function(req,res,next){
     })
 });
 
-router.post('/delreportAdmin',function(req,res,next){
+router.post('/delreportAdmin',middlewareObj.isAdmin,function(req,res,next){
 
     // console.log("inside delreport admin")
     // console.log(req.body.reportId )
@@ -87,7 +99,7 @@ router.post('/delreportAdmin',function(req,res,next){
 
 });
 
-router.post('/rejreportAdmin',function(req,res,next){
+router.post('/rejreportAdmin',middlewareObj.isAdmin,function(req,res,next){
 
     console.log("inside rejreportAdmin  admin")
     // console.log(req.body.reportId )
@@ -117,7 +129,7 @@ router.post('/rejreportAdmin',function(req,res,next){
 
 });
 
-router.post('/approvereportAdmin',function(req,res,next){
+router.post('/approvereportAdmin',middlewareObj.isAdmin,function(req,res,next){
 
     // console.log("inside delreport admin")
     // console.log(req.body.reportId )

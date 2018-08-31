@@ -25,10 +25,9 @@ export class LabuserdashboardComponent implements OnInit {
           (res)=>
           {
             if(res['responseStatus'] == '99') {
-              if (res['error'].name == 'TokenExpiredError') {
-                window.alert('Session Expired , Please login again..!')
                 this.authService.logout();
-                this.router.navigate(['signin']);            }
+              window.alert(res['response'])
+              this.router.navigate(['signin']);
             }
 
 

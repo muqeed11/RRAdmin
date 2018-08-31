@@ -9,10 +9,6 @@ import {AuthService} from "../auth/auth.service";
 
 // const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 
-var token =localStorage.getItem('token')
-  ? '?token=' + localStorage.getItem('token')
-  : '';
-const URL = 'http://192.168.134.1:3000/reports/fileupload'+token;
 
 
 @Component({
@@ -26,7 +22,12 @@ export class LabUploadReportsComponent {
   @ViewChild('inputfile')
     myInputSelectedFile : ElementRef;
 
-  uploader: FileUploader = new FileUploader({url: URL})
+   token =localStorage.getItem('token')
+   userId1 =localStorage.getItem('userId')
+
+   URL = 'http://192.168.134.1:3000/reports/fileupload?token='+this.token +'&userId=' + this.userId1;
+
+  uploader: FileUploader = new FileUploader({url: this.URL})
 
   reportTypes: ReportTypes[] = [
     {id: 1, type: 'CBP'},
@@ -38,6 +39,7 @@ export class LabUploadReportsComponent {
   paymentPlans : string[] = [
     '500INR(6Months)', '1000INR(1year)'
   ];
+
 
   dropdownReports: String;
   customerId: String;
@@ -71,13 +73,9 @@ export class LabUploadReportsComponent {
             }
             else
             if(res['responseStatus'] == '99') {
-              if (res['error'].name == 'TokenExpiredError') {
-                window.alert('Session Expired , Please login again..!')
-                this.authService.logout();
-                this.router.navigate(['signin']);
-              }
-              else
+              this.authService.logout();
               window.alert(res['response'])
+              this.router.navigate(['signin']);
             }
             else
               window.alert(res['response'])
@@ -95,6 +93,7 @@ export class LabUploadReportsComponent {
 
       form.append('customerId', this.customerId); //note comma separating key and value
       form.append('uploadedBy', this.uploadedBy); //note comma separating key and value
+      form.append('userId', this.uploadedBy); //note comma separating key and value
       form.append('reportType', this.dropdownReports); //note comma separating key and value
       form.append('reportDate', this.reportDate); //note comma separating key and value
       form.append('reportFileNames', this.onlyFilename); //note comma separating key and value
@@ -108,7 +107,7 @@ export class LabUploadReportsComponent {
 
     this.customerId = form.value.customerId;
 
-    const body: any = {customerId: this.customerId};
+    const body: any = {customerId: this.customerId,userId:localStorage.getItem('userId')};
 
     this.server.validateCustomer(body)
       .subscribe(
@@ -122,11 +121,10 @@ export class LabUploadReportsComponent {
           }
           else
           if(res['responseStatus'] == '99') {
-            if (res['error'].name == 'TokenExpiredError') {
               window.alert('Session Expired , Please login again..!')
               this.authService.logout();
               this.router.navigate(['signin']);
-            }
+
           }
         }
       )
@@ -157,12 +155,18 @@ export class LabUploadReportsComponent {
 
   payments() {
 
-    document.getElementById('reportUpload').style.visibility = 'visible';
-    const body:any = {customerId:this.customerId,uploadedBy:this.uploadedBy,customerPlan:this.selectedPlan}
+    const body:any = {customerId:this.customerId,uploadedBy:this.uploadedBy,
+      customerPlan:this.selectedPlan,userId:this.uploadedBy}
 
     this.server.updatePayments(body)
       .subscribe(
-        (res)=> console.log(res)
+        (res)=> {
+          // console.log(res)
+          if(res['responseStatus'] == '0')
+            document.getElementById('reportUpload').style.visibility = 'visible';
+          else
+            window.alert(res['response'])
+        }
       )
   }
 

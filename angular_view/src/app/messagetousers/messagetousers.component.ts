@@ -19,11 +19,14 @@ export class MessagetousersComponent implements OnInit{
 
   messageToUser(form:NgForm){
 
-    const userId = form.value.userid;
+    const customerId = form.value.userid;
     const message = form.value.message;
     const subject = form.value.subject;
 
-    const body:any = {"userId":userId , "messageSub": subject ,"messageContent" : message } ;
+    const userId = localStorage.getItem('userId')
+
+    const body:any = {"customerId":customerId , "messageSub": subject ,
+      "messageContent" : message, "userId":userId } ;
 
     this.server.sendMessage(body)
       .subscribe(
@@ -53,11 +56,14 @@ export class MessagetousersComponent implements OnInit{
   messagesSentToUser(from:Form){}
 
   bulkMessages(form:NgForm){
-    const userId = "ALL";
+    const customerId = "ALL";
     const message = form.value.message3;
     const subject = form.value.subject2;
 
-    const body:any = {"userId":userId , "messageSub": subject ,"messageContent" : message } ;
+    const userId = localStorage.getItem('userId')
+
+    const body:any = {"customerId":customerId , "messageSub": subject ,
+      "messageContent" : message , "userId": userId} ;
     console.log(body)
 
     this.server.sendMessage(body)

@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
       ? '?token=' + localStorage.getItem('token')
       : '';
 
+    // console.log(token.decoded)
     //PIE Chart
     this.httpService.post('http://192.168.134.1:3000/dashboardGraphs/reportscount'+ token,this.body)
       // .map((response:Response) => response.json())
@@ -45,11 +46,14 @@ export class DashboardComponent implements OnInit {
       // })
       .subscribe(res => {
         if(res['responseStatus'] == '99') {
-          if (res['error'].name == 'TokenExpiredError') {
-            window.alert('Session Expired , Please login again..!')
-            this.authService.logout();
-            this.router.navigate(['signin']);
-          }
+          // if (res['error'].name == 'TokenExpiredError') {
+                    //   window.alert('Session Expired , Please login again..!')
+                    //   this.authService.logout();
+                    //   this.router.navigate(['signin']);
+                    // }
+          this.authService.logout();
+          window.alert(res['response']);
+          this.router.navigate(['signin']);
         }
 
         let result = res['reportsbycount'];

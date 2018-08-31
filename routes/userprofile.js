@@ -5,6 +5,12 @@ var Userauth = require('../models/userauth')
 
 router.post('/register', function (req, res, next) {
 
+    var tempRole = ""
+    if(req.body.customerRole === null)
+        tempRole = 'MobileUser'
+    else
+        tempRole = req.body.customerRole
+
     var userProfile = new Userprofile({
        customerName : req.body.customerName,
        userId : req.body.userId,
@@ -16,7 +22,8 @@ router.post('/register', function (req, res, next) {
         city:req.body.city,
         phoneNumber:req.body.phoneNumber,
         familyDoctor:req.body.doctorName,
-        customerRole : req.body.customerRole,
+        customerRole : tempRole,
+        createdBy : req.body.createdBy,
         lastUpdated:Date.now()
     });
 
@@ -32,6 +39,7 @@ router.post('/register', function (req, res, next) {
 
         else {
             userProfile.save(function (err, result) {
+
                 if (err) {
                     return res.status(406).json({
                         title: 'An Error Occured',
@@ -47,15 +55,13 @@ router.post('/register', function (req, res, next) {
                         customerEmail : req.body.customerEmail,
                         customerName:req.body.customerName,
                         active:'Y',
-                        customerRole : req.body.customerRole,
+                        customerRole : tempRole,
                         createdDate:Date.now(),
                         validDate:Date.now()+15983902224,
                         lastUpdated:Date.now()
                     });
-                    console.log('inside userauth- before save');
 
                     userAuth.save(function (err, result) {
-                        console.log('inside userauth- after save');
                         if (err) {
                             return res.status(406).json({
                                 title: 'An Error Occured..!',

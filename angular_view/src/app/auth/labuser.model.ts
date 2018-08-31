@@ -7,7 +7,8 @@ export class LabUser {
               public city:String,
               public phoneNumber:String,
               public doctorName: String,
-              public customerRole:String
+              public customerRole:String,
+              public createdBy:String
               ){}
 
 }

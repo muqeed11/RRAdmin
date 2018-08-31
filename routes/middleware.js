@@ -1,14 +1,16 @@
 var middlewareObj = {};
 
 middlewareObj.isAdmin = function (req,res,next) {
-    console.log(req)
-    if (req.user == 'Admin') {
-    console.log("user is admin")
+    if (req.decoded.user.customerRole == 'Admin') {
         next()
-}
+    }
     else {
-        console.log("User is not admin")
-        next()
+        console.log("User is not admin" , req.decoded.customerRole)
+        // res.status(401).json({
+        res.json({
+            response: 'you are not authorized',
+            responseStatus:'99'
+        });
 
     }
 

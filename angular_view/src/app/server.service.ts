@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import 'rxjs/Rx';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LabUser} from "./auth/labuser.model";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class ServerService {
@@ -46,7 +47,10 @@ export class ServerService {
     var token =localStorage.getItem('token')
       ? '?token=' + localStorage.getItem('token')
       : '';
-    return this.http.post('http://192.168.134.1:3000/editcustomer/resetPassword' + token,body);
+    const headers = new HttpHeaders({'Content-Type':'application/json'})
+
+    return this.http.post('http://192.168.134.1:3000/editcustomer/resetPassword' + token,body,{headers:headers})
+      .catch((error: Response) => Observable.throw(error.json()))
 
   }
 

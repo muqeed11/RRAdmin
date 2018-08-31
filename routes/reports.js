@@ -8,6 +8,7 @@ var fse = require('fs-extra');
 var PDFDocument = require('pdfkit');
 var multer = require('multer');
 var jwt = require('jsonwebtoken');
+var middlewareObj = require('./middleware');
 
 
 router.use('/',function (req,res,next) {
@@ -19,12 +20,32 @@ router.use('/',function (req,res,next) {
             // return res.status(401).json({
             return res.json({
                 response:'Not Authenticated',
-                responseStatus:'99',
-                error:err
-
+                responseStatus:'99'
             })
         }
-        next();
+        else {
+            req.decoded = decoded
+
+            var tempuserid = "";
+            if(req.query.userId != null)
+                tempuserid = req.query.userId
+            else
+                tempuserid = req.body.userId
+
+            console.log(req.query.userId)
+            console.log(req.body.userId)
+            console.log(tempuserid)
+
+            if(req.decoded.user.userId === tempuserid)
+                next();
+            else
+            {
+                res.json({
+                    response: 'Please login again..!',
+                    responseStatus:'99'
+                });
+            }
+        }
     })
 
 });
@@ -34,7 +55,7 @@ router.use('/',function (req,res,next) {
 //define multer storage
 var store = multer.diskStorage({
     destination:function (req,file,cb) {
-        const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
+        const permanentFolder = 'public/Reports_folder/Reports/' + req.body.customerId + '/';
        mkdirp(permanentFolder)
         cb(null,permanentFolder)
     },
@@ -78,7 +99,7 @@ router.post('/addreport',function (req,res,next) {
     const tempFolder = "public/Reports_folder/TempReports/";
     const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
     const reportFilenamesArray = req.body.reportFileNames.split(",");
-    // console.log(reportFilenamesArray);
+    console.log(reportFilenamesArray)
     mkdirp(permanentFolder,function (err) {
         if(!err)
         {
@@ -135,6 +156,7 @@ router.post('/addreport',function (req,res,next) {
 
 router.post('/searchreports',function (req,res,next) {
 
+    console.log(req.body.fromDate ,req.body.toDate )
     if(req.body.fromDate && req.body.reportType) {
         Reports.find({userId: req.body.userId , reportType:req.body.reportType,
         reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate } , reportStatus:'Approved'}
@@ -184,27 +206,39 @@ router.post('/searchreports',function (req,res,next) {
 
 router.post('/showreport',function(req,res,next){
 
-    // console.log(req.body._id)
+    console.log(req.body._id)
     Reports.findOne({_id:req.body._id},function (err,result) {
 
-        const reportPath = result.reportKey;
-        const reportType1 = result.reportType;
-        fs.readFile(reportPath,'base64',function (err,base64string) {
-            if(!err)
-            {
-                return res.json({
-                    reportFile:base64string,
-                    responseStatus: '0',
-                    reportType : reportType1
-                })
-            }
-            else {
-                return res.json({
-                    responseStatus: '1',
-                    response: 'An Error Occurred while fetching one report'
-                })
-            }
-        });
+        if(result) {
+            const reportPath = result.reportKey;
+            const reportType1 = result.reportType;
+            fs.readFile(reportPath,'base64',function (err,base64string) {
+                if(!err)
+                {
+                    return res.json({
+                        reportFile:base64string,
+                        responseStatus: '0',
+                        reportType : reportType1
+                    })
+                }
+                else {
+                    return res.json({
+                        responseStatus: '1',
+                        response: 'An Error Occurred while fetching one report'
+                    })
+                }
+            });
+        }
+        else
+        {
+            return res.json({
+                response: "Error while fetching report..!",
+                responseStatus: '1'
+            })
+
+        }
+
+
     })
 });
 
@@ -311,8 +345,6 @@ router.post('/uploadLabReport',function(req,res,next) {
     const permanentFolder = 'public/Reports_folder/Reports/' + req.body.customerId + '/';
    const reportFilenamesArray = req.body.reportFileNames.split(",");
 
-   console.log(req.body)
-
             for(var i=0;i<reportFilenamesArray.length -1;i++) {
                 let reportFullPath = permanentFolder + reportFilenamesArray[i];
                 const reports = new Reports({
@@ -347,7 +379,7 @@ router.post('/fileupload',function (req,res,next) {
 
             upload(req,res,function (err) {
                 if(err) {
-                    console.log('report uploaded..!' , err)
+                    console.log('report not uploaded..!' , err)
 
                     return res.json({
                         error:err

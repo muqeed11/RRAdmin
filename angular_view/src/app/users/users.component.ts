@@ -16,12 +16,8 @@ export class UsersComponent implements OnInit {
   constructor(private http:HttpClient,private router:Router,private authService:AuthService) { }
 
   results : any =[] ;
-  userinfo : any=  [
-    {
-      userid:"aa",
-      password: "aa"
+  body :any = { userId : localStorage.getItem('userId') };
 
-    }];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
    ngOnInit() {
@@ -31,12 +27,11 @@ export class UsersComponent implements OnInit {
      };
 
      const headers = new HttpHeaders({'Content-Type':'application/json'});
-     const body=JSON.stringify(this.userinfo);
      const token =localStorage.getItem('token')
        ? '?token=' + localStorage.getItem('token')
        : '';
 
-     this.http.post('http://192.168.134.1:3000/listofcustomers/customerdetails'+ token,this.userinfo,{headers:headers})
+     this.http.post('http://192.168.134.1:3000/listofcustomers/customerdetails'+ token,this.body,{headers:headers})
       .subscribe(
         (res)=>
         {
@@ -47,11 +42,14 @@ export class UsersComponent implements OnInit {
 
           else
             if(res['responseStatus']=='99') {
-              if (res['error'].name == 'TokenExpiredError') {
-                window.alert('Session Expired , Please login again..!')
+              // if (res['error'].name == 'TokenExpiredError') {
+              //   window.alert('Session Expired , Please login again..!')
+              //   this.authService.logout();
+              //   this.router.navigate(['signin']);
+              // }
+              window.alert(res['response']);
                 this.authService.logout();
                 this.router.navigate(['signin']);
-              }
             }
             else
               window.alert(res['response'])

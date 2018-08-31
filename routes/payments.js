@@ -9,21 +9,31 @@ var jwt = require('jsonwebtoken');
 router.use('/',function (req,res,next) {
 
     jwt.verify(req.query.token,'secret',function (err,decoded) {
+        // console.log(Date.now())
 
         if(err)
         {
-            return res.status(401).json({
+            // return res.status(401).json({
+            return res.json({
                 response:'Not Authenticated',
-                responseStatus:'99',
-                error:err
-
+                responseStatus:'99'
             })
         }
-        next();
+        else {
+            req.decoded = decoded
+            if(req.decoded.user.userId === req.body.userId)
+                next();
+            else
+            {
+                res.json({
+                    response: 'Please login again..!',
+                    responseStatus:'99'
+                });
+            }
+        }
     })
 
 });
-
 router.post('/transactions',function (req,res,next) {
 
     var validPeriod = 0;

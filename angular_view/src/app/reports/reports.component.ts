@@ -44,10 +44,9 @@ export class ReportsComponent implements OnInit {
         {
           console.log(res)
           if(res['responseStatus'] == '99') {
-            if (res['error'].name == 'TokenExpiredError') {
-              window.alert('Session Expired , Please login again..!')
               this.authService.logout();
-              this.router.navigate(['signin']);            }
+            window.alert(res['response'])
+            this.router.navigate(['signin']);
           }
 
           document.getElementById('reportDetailsContainer').style.visibility='visible'
@@ -108,7 +107,7 @@ export class ReportsComponent implements OnInit {
   }
 
   showReport(template: TemplateRef<any>,reportId:string , i: number){
-    const body:any = {reportId:reportId} ;
+    const body:any = {reportId:reportId,userId:localStorage.getItem('userId')} ;
 
 
     // console.log(body)

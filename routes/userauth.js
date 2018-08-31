@@ -36,10 +36,13 @@ router.post('/signin', function (req, res, next){
 
     Userauth.findOne({userId:req.body.userId}, function(err,userinfo) {
 
-        var token = jwt.sign({user: userinfo}, 'secret');
+        // // var token = jwt.sign({user: userinfo}, 'secret');
+        // var token = jwt.sign({user: {"userId":req.body.userId,
+        //         "customerRole":userinfo.customerRole}}, 'secret');
 
         // console.log(userinfo)
         // console.log(err)
+        let token = ""
 
         if(err){
             return res.status(500).json({
@@ -65,6 +68,9 @@ router.post('/signin', function (req, res, next){
                 responseStatus: '2'
             });
         }
+
+        token = jwt.sign({user: {"userId":req.body.userId,
+                "customerRole":userinfo.customerRole}}, 'secret');
 
         res.status(200).json({
             response:'Login successful',

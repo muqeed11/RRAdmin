@@ -32,10 +32,12 @@ export class RegisterlabuserComponent implements OnInit {
     const doctorname = form.value.doctorname;
     const labphonenum = form.value.labnum;
 
+    const userId = localStorage.getItem('userId')
+
     const labuser = new LabUser(labuserid,password,labname,email,area,city,
-      labphonenum,doctorname,customerrole)
+      labphonenum,doctorname,customerrole,userId)
 
-
+console.log(labuser)
     this.server.registerLabUser(labuser)
       .subscribe(
         (res)=>
