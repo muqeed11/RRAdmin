@@ -139,19 +139,20 @@ router.post('/resetPassword',middlewareObj.isAdmin,function (req,res) {
     Userauth.updateOne({userId:req.body.customerId},{$set:{password:req.body.newPassword , lastUpdated:Date.now()}},function(err,result) {
         // console.log(Date.now())
 
-        // console.log(result)
+        console.log(result['nModified'])
 
-        if(result) {
+        if(result['nModified'] == 1) {
             res.json({
                 responseStatus : '0',
                 response: 'Password reset success'
             })
         }
 
-        else {
+        else
+            if(result['n'] == 0) {
             res.json({
                 responseStatus : '1',
-                response: 'Error while resetting password'
+                response: 'No matching records..!'
             })
         }
 

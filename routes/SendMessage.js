@@ -35,23 +35,11 @@ router.use('/',function (req,res,next) {
 });
 
 router.post('/messageToCustomer',middlewareObj.isAdmin,function (req,res,next) {
-    // console.log(req.body.userId)
-    // console.log(req.body.messageSub)
-    // console.log(req.body.messageContent)
 
-    var currentDate = {date: new Date()};
 
-    console.log({date: new Date()})
-    console.log(currentDate)
-    console.log(new Date(Date.now()).toISOString());
-    var nDate = new Date().toLocaleString('en-US', {
-        timeZone: 'Asia/Calcutta'
-    });
-    console.log(nDate)
+    var dte = new Date();
+    dte.setTime(dte.getTime() - dte.getTimezoneOffset()*60*1000);
 
-    var dte = new Date(sTime);
-    dte.setTime(dte.getTime()- dte.getTimezoneOffset()*60*1000);
-    console.log(dte)
 
     var messages = new Messages({
         userId:req.body.customerId,
@@ -59,8 +47,8 @@ router.post('/messageToCustomer',middlewareObj.isAdmin,function (req,res,next) {
         messageContent:req.body.messageContent,
         messageStatus:'U',
         messageUpdatedBy:req.body.userId,
-        createdDate : nDate,
-        lastUpdated:Date.now()
+        createdDate : dte,
+        lastUpdated:dte
     });
 
     messages.save(function (err,result) {
@@ -100,16 +88,32 @@ router.post('/getMessageList',function (req,res,next) {
     // console.log(ISODate(Date.now("YYYY-MM-DD")))
     Messages.find({$or:[{userId:tempid} ,{userId:"ALL"}], messageStatus:'U'},{_id:1,messageSub:1,createdDate:1} ,function (err,result) {
 
-         console.log(Date.now())
+         // console.log(Date.now())
 
-        var nDate = new Date().toLocaleString('en-US', {
-            timeZone: 'Asia/Calcutta'
-        });
+        // var nDate = new Date().toLocaleString('en-US', {
+        //     timeZone: 'Asia/Calcutta'
+        // });
 
-         console.log(result[0].createdDate.toLocaleString('en-US', {timeZone: 'Asia/Calcutta' }));
-        var dte = new Date(Date.now());
-        dte.setTime(dte.getTime()- dte.getTimezoneOffset()*60*1000);
-        console.log(dte)
+        //  // console.log(result[0].createdDate.toLocaleString('en-US', {timeZone: 'Asia/Calcutta' }));
+        // var dte = new Date(Date.now());
+        // dte.setTime(dte.getTime()- dte.getTimezoneOffset()*60*1000);
+        // console.log(dte.toLocaleDateString())
+        // console.log(dte.toLocaleString())
+
+        // console.log(result[0])
+        // var dte2 = (result[0].createdDate.getTime() -
+        //     result[0].createdDate.getTimezoneOffset()*60*1000);
+
+        // console.log(dte3.toLocaleString())
+        //
+        // var dte3 = result[0].createdDate
+        // dte3.setTime(dte3.getTime() - dte3.getTimezoneOffset()*60*1000);
+        //
+        // var dte3 = result[1].createdDate
+        // dte3.setTime(dte3.getTime() - dte3.getTimezoneOffset()*60*1000);
+        //
+        // console.log(result)
+
 
         if (err) {
             return res.json({

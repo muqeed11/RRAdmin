@@ -32,6 +32,7 @@
     "jsonwebtoken": "^8.3.0",
     "minimist": "*",
     "mkdirp": "^0.5.1",
+    "moment": "^2.22.2",
     "mongoose": "^5.2.10",
     "mongoose-unique-validator": "^2.0.1",
     "morgan": "~1.6.1",

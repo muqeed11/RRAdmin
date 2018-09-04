@@ -9,7 +9,7 @@ var UserSchema = new Schema({
     userId:{type:String,required:true},
     // reportId:{type:Number,required:true},
     reportType:{type:String,required:true},
-    reportDate:{type:String ,required:true},
+    reportDate:{type:Date ,required:true},
     reportKey:{type:String,required:true},
     reportStatus:{type:String},
     reportReason:{type:String},

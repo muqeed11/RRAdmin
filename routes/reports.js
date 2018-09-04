@@ -9,6 +9,8 @@ var PDFDocument = require('pdfkit');
 var multer = require('multer');
 var jwt = require('jsonwebtoken');
 var middlewareObj = require('./middleware');
+var moment = require('moment');
+
 
 
 router.use('/',function (req,res,next) {
@@ -31,10 +33,6 @@ router.use('/',function (req,res,next) {
                 tempuserid = req.query.userId
             else
                 tempuserid = req.body.userId
-
-            console.log(req.query.userId)
-            console.log(req.body.userId)
-            console.log(tempuserid)
 
             if(req.decoded.user.userId === tempuserid)
                 next();
@@ -96,70 +94,94 @@ router.post('/upload', function (req, res, next){
 
 router.post('/addreport',function (req,res,next) {
 
+    console.log(req.body.reportDate)
     const tempFolder = "public/Reports_folder/TempReports/";
     const permanentFolder = 'public/Reports_folder/Reports/' + req.body.userId + '/';
     const reportFilenamesArray = req.body.reportFileNames.split(",");
     console.log(reportFilenamesArray)
-    mkdirp(permanentFolder,function (err) {
-        if(!err)
-        {
-            for(var i=0;i<reportFilenamesArray.length;i++) {
-                let reportFullPath = permanentFolder + reportFilenamesArray[i];
-                const reports = new Reports({
-                    userId:req.body.userId,
-                    reportType:req.body.reportType,
-                    reportDate:req.body.reportDate,
-                    reportKey:reportFullPath,
-                    reportStatus:"Approved",
-                    reportReason:"Auto Approved",
-                    uploadedBy: req.body.uploadedBy,
-                    createdDate: Date.now(),
-                    lastUpdated:Date.now()
+    if(moment(req.body.reportDate,'DD/MM/YYYY').isValid())
+    {
+    var date = moment(req.body.reportDate, 'DD/MM/YYYY');
+    var train_date = date.format('YYYY-MM-DD');
+    console.log(train_date);
+        mkdirp(permanentFolder, function (err) {
+            if (!err) {
+                for (var i = 0; i < reportFilenamesArray.length; i++) {
+                    let reportFullPath = permanentFolder + reportFilenamesArray[i];
+                    const reports = new Reports({
+                        userId: req.body.userId,
+                        reportType: req.body.reportType,
+                        reportDate: train_date,
+                        reportKey: reportFullPath,
+                        reportStatus: "Approved",
+                        reportReason: "Auto Approved",
+                        uploadedBy: req.body.uploadedBy,
+                        createdDate: Date.now(),
+                        lastUpdated: Date.now()
 
-                });
-                reports.save(function (err1, result) {
-                    if (err1) {
-                        return res.status(500).json({
-                            title: 'An Error Occured while saving data in reports table',
-                            error: err1,
-                            responseStatus:'1'
-                        });
-                    }
-                });
+                    });
+                    reports.save(function (err1, result) {
+                        if (err1) {
+                            console.log('inside error', i, err1)
+                            i = reportFilenamesArray.length
+                            return res.json({
+                                title: 'An Error Occured while saving data in reports table',
+                                error: err1,
+                                responseStatus: '1'
+                            });
+                        }
+                    });
 
-                fse.move(tempFolder + reportFilenamesArray[i],reportFullPath,function (err) {
-                    if(err) {
-                        return res.json({
-                            title: 'An Error Occured while moving reports',
-                            error: err,
-                            responseStatus : '1'
-                        })
-                    }
-                    else console.log("files moved");
-                    
-                })
+                    fse.move(tempFolder + reportFilenamesArray[i], reportFullPath, function (err) {
+                        if (err) {
+                            return res.json({
+                                title: 'An Error Occured while moving reports',
+                                error: err,
+                                responseStatus: '1'
+                            })
+                        }
+                        else {
+                            console.log("files moved");
+                            return res.json({
+                                response: "reports uploaded",
+                                responseStatus: '0'
+                            });
+                        }
+                    })
+                }
             }
-            return res.json({
-                response:"reports uploaded",
-                responseStatus:'0'
-            });
-        }
-        else {
-            return res.json({
-                response:"Error while creating permanent folder",
-                responseStatus:'1'
-            });
-        }
-    });
+            else {
+                return res.json({
+                    response: "Error while creating permanent folder",
+                    responseStatus: '1'
+                });
+            }
+        });
+    }
+    else
+    {
+        console.log('inside else')
+        return res.json({
+            response: 'Do not run with invalid date..!',
+            responseStatus: '1'
+        });
+    }
 
 });
 
 router.post('/searchreports',function (req,res,next) {
 
-    console.log(req.body.fromDate ,req.body.toDate )
-    if(req.body.fromDate && req.body.reportType) {
+
+    if(req.body.fromDate && req.body.toDate && req.body.reportType) {
+
+        var date1 = moment(req.body.fromDate, 'DD/MM/YYYY');
+        var fromDate = date1.format('YYYY-MM-DD');
+
+        var date2 = moment(req.body.toDate, 'DD/MM/YYYY');
+        var toDate = date2.format('YYYY-MM-DD');
+
         Reports.find({userId: req.body.userId , reportType:req.body.reportType,
-        reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate } , reportStatus:'Approved'}
+        reportDate:{$gte:fromDate ,$lte:toDate } , reportStatus:'Approved'}
         ,function (err,result) {
 
             if(!err) f1(result)
@@ -171,8 +193,14 @@ router.post('/searchreports',function (req,res,next) {
     else if(req.body.fromDate && req.body.toDate  ) {
         //get data if date range is selected
 
+        var date1 = moment(req.body.fromDate, 'DD/MM/YYYY');
+        var fromDate = date1.format('YYYY-MM-DD');
+
+        var date2 = moment(req.body.toDate, 'DD/MM/YYYY');
+        var toDate = date2.format('YYYY-MM-DD');
+
         Reports.find({userId: req.body.userId ,
-            reportDate:{$gte:req.body.fromDate ,$lte:req.body.toDate } , reportStatus:'Approved'}, function (err,result) {
+            reportDate:{$gte:fromDate ,$lte:toDate } , reportStatus:'Approved'}, function (err,result) {
 
             if(!err) f1(result)
             else f2(err)
@@ -188,6 +216,20 @@ router.post('/searchreports',function (req,res,next) {
     }
 
     function f1(result) {
+        var date3
+        var resultDate = '' ;
+        var rsDate = '';
+        var convertedDate = '';
+        for(var i=0;i<result.length;i++) {
+            resultDate = result[i].reportDate.toISOString()
+            rsDate = resultDate.slice(0,10)
+            date3 = moment(rsDate, 'YYYY-MM-DD');
+            convertedDate = date3.format('DD/MM/YYYY');
+            var data = result[i].toJSON()
+            data['reportDate'] = convertedDate
+            result[i] = data
+        }
+
         return res.status(200).json({
             responseStatus: '0',
             userId: req.body.userId,
