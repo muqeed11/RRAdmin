@@ -1,0 +1,18 @@
+<div>
+  <input id="inputImage" type="file" accept="image/*" (change)="onChange($event)" multiple />
+  <b *ngIf="showTitle">Original Image List</b>
+
+  <!--<div *ngFor="let item of processedImages">-->
+    <!--<img src="{{item.imageDataUrl}}" height="800" width="1000">-->
+  <!--</div>-->
+
+  <!--<b *ngIf="showTitle" >Compressed Image List</b>-->
+  <!--<div *ngFor="let item of processedImages">-->
+    <!--<img src="{{item.compressedImage.imageDataUrl}}" height="800" width="1000">-->
+  <!--</div>-->
+
+
+  <!--<img [src]="src" [hidden]="!src">-->
+  <!--<input type="file" imageUpload (imageSelected)="selected($event)" multiple [resizeOptions]="resizeOptions">-->
+
+</div>
