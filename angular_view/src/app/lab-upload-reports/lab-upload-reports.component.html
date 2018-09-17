@@ -55,16 +55,17 @@
 
     <mat-card class="col-xs-12 col-md-7 col-sm-10 col-sm-offset-1 col-sm-offset-2"
               id="reportUpload" style="visibility: hidden">
-      <form (ngSubmit)="UploadReports(f1)" #f1="ngForm" ngNativeValidate>
+      <form (ngSubmit)="UploadReports()" #f1="ngForm" ngNativeValidate>
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <input #inputfile type="file"  name="fileUpload"  id="fileUpload" accept="image/*"
-                     multiple ng2FileSelect [uploader]="uploader"  >
+              <!--<input #inputfile type="file"  name="fileUpload"  id="fileUpload" accept="image/*"-->
+                     <!--multiple ng2FileSelect [uploader]="uploader"  >-->
             </div>
-            <div class="row uploadList" *ngFor="let item of uploader.queue">
-              <div class="col-sm-8">{{item.file.name}}</div>
-            </div>
+            <input id="inputImage" type="file" accept="image/*" (change)="onChange($event)" multiple />
+            <!--<div class="row uploadList" *ngFor="let item of uploader.queue">-->
+              <!--<div class="col-sm-8">{{item.file.name}}</div>-->
+            <!--</div>-->
           </div>
           <!--<div class="row uploadList" *ngFor="let item of uploader.queue">-->
           <!--<div class="col-sm-8">{{item.file.name}}</div>-->

@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 })
 export class SidenavbarComponent {
 
-  constructor(protected authService:AuthService , private router:Router) {
+  constructor(public authService:AuthService , private router:Router) {
 
   }
 

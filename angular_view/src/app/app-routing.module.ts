@@ -14,6 +14,7 @@ import {ResetpasswordComponent} from "./resetpassword/resetpassword.component";
 import {LabUploadReportsComponent} from "./lab-upload-reports/lab-upload-reports.component";
 import {ChangeownpwdComponent} from "./changeownpwd/changeownpwd.component";
 import {LabuserdashboardComponent} from "./labuserdashboard/labuserdashboard.component";
+import {TestcompComponent} from "./testcomp/testcomp.component";
 
 const appRoutes: Routes =[
   // { path: '',redirectTo:'/signin', pathMatch:'full'},
@@ -30,7 +31,8 @@ const appRoutes: Routes =[
   { path : 'resetPassword', component:ResetpasswordComponent ,canActivate:[AuthGuard]},
   { path : 'changeownpassword', component:ChangeownpwdComponent ,canActivate:[AuthGuard]},
   { path : 'dashboardemp', component:DashboardempComponent ,canActivate:[AuthGuard]},
-  { path : 'labUploadReports', component:LabUploadReportsComponent ,canActivate:[AuthGuard]}
+  { path : 'labUploadReports', component:LabUploadReportsComponent ,canActivate:[AuthGuard]},
+  { path : 'testcomp', component:TestcompComponent ,canActivate:[AuthGuard]}
   // //
   // { path : 'dashboard', component:DashboardComponent },
   // { path : 'dashboardemp', component:DashboardempComponent},

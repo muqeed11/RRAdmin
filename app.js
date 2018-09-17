@@ -73,9 +73,9 @@ app.set('view engine', 'hbs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({
-    limit:'10mb', extended:true}));
+    limit:'50mb', extended:true}));
 app.use(bodyParser.urlencoded({
-    limit:'10mb',
+    limit:'50mb',
     parameterLimit:100000,
     extended: true}));
 app.use(cookieParser());

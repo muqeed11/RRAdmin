@@ -34,6 +34,9 @@ import {AdminGuard} from "./auth/auth.admin-guard.service";
 import { LabuserdashboardComponent } from './labuserdashboard/labuserdashboard.component';
 import { ErrorComponent } from './error/error.component';
 import {ErrorService} from "./error/error.service";
+import {ImageCompressService,ResizeOptions,ImageUtilityService } from 'ng2-image-compress';
+import { TestcompComponent } from './testcomp/testcomp.component';
+import {ImageUploadModule} from "ng2-imageupload";
 
 
 
@@ -59,7 +62,8 @@ import {ErrorService} from "./error/error.service";
     LabUploadReportsComponent,
     ChangeownpwdComponent,
     LabuserdashboardComponent,
-    ErrorComponent
+    ErrorComponent,
+    TestcompComponent
   ],
   imports: [
     BrowserModule,
@@ -72,11 +76,13 @@ import {ErrorService} from "./error/error.service";
     BrowserAnimationsModule,
     FileUploadModule,
     ModalModule.forRoot(),
-    MatRadioModule
+    MatRadioModule,
+    ImageUploadModule
   ],
   exports: [
   ],
-  providers: [HttpClientModule,ServerService,AuthService,AuthGuard,AdminGuard,ErrorService],
+  providers: [HttpClientModule,ServerService,AuthService,AuthGuard,AdminGuard,
+    ErrorService,ImageCompressService,ResizeOptions],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

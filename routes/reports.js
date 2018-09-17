@@ -384,38 +384,82 @@ router.post('/generatePDF',function (req,res,next) {
 });
 
 router.post('/uploadLabReport',function(req,res,next) {
+
     const permanentFolder = 'public/Reports_folder/Reports/' + req.body.customerId + '/';
-   const reportFilenamesArray = req.body.reportFileNames.split(",");
+    let reportFullPath = "";
+    let base64String=""
 
-            for(var i=0;i<reportFilenamesArray.length -1;i++) {
-                let reportFullPath = permanentFolder + reportFilenamesArray[i];
-                const reports = new Reports({
-                    userId:req.body.customerId,
-                    reportType:req.body.reportType,
-                    reportDate:req.body.reportDate,
-                    reportKey:reportFullPath,
-                    reportStatus:"Approved",
-                    reportReason:"Auto Approved",
-                    uploadedBy:req.body.uploadedBy,
-                    createdDate: Date.now(),
-                    lastUpdated:Date.now()
+    mkdirp(permanentFolder, function (err) {
+        if (!err) {
 
-                });
-                reports.save(function (err1, result) {
-                    if (err1) {
-                        return res.status(500).json({
-                            title: 'An Error Occured while saving data in reports table',
-                            error: err1,
-                            responseStatus:'1'
+            for (var i = 0; i < req.body.numberofReports; i++) {
+
+                base64String = req.body.reportsContents[i]['imageDataUrl']
+                const base64data = new Buffer(base64String, 'base64');
+                console.log(req.body.reportsContents[i]['imageDataUrl'])
+                reportFullPath = permanentFolder + req.body.customerId + "." + req.body.reportType + "." + Date.now() + ".jpg";
+                console.log(reportFullPath)
+
+                fs.writeFile(reportFullPath, base64data, function (err) {
+                    if (err) {
+                        res.send({
+                            response: "Error while saving the report",
+                            responseStatus: '1'
                         });
+
+                    }
+                    else
+                    {
+                        saveReport()
                     }
                 });
+
             }
+
             return res.json({
-                response: 'reports table updated',
+                response: "report saved",
                 responseStatus: '0'
             });
+        }
+        else {
+            return res.json({
+                response: "Error while creating permanent folder",
+                responseStatus: '1' });
+        }
     });
+
+    function saveReport() {
+            const reports = new Reports({
+                userId: req.body.customerId,
+                reportType: req.body.reportType,
+                reportDate: req.body.reportDate,
+                reportKey: reportFullPath,
+                reportStatus: "Approved",
+                reportReason: "Auto Approved",
+                uploadedBy: req.body.uploadedBy,
+                createdDate: Date.now(),
+                lastUpdated: Date.now()
+
+            });
+            reports.save(function (err1, result) {
+                if (err1) {
+                    return res.status(500).json({
+                        title: 'An Error Occured while saving data in reports table',
+                        error: err1,
+                        responseStatus: '1'
+                    });
+                }
+                // else {
+                //     return res.json({
+                //         response: 'reports table updated',
+                //         responseStatus: '0'
+                //     });
+                // }
+            });
+    }
+
+});
+
 
 router.post('/fileupload',function (req,res,next) {
 
