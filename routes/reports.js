@@ -394,9 +394,9 @@ router.post('/uploadLabReport',function(req,res,next) {
 
             for (var i = 0; i < req.body.numberofReports; i++) {
 
-                base64String = req.body.reportsContents[i]['imageDataUrl']
+                base64String = req.body.reportsContents[i]['imageDataUrl'].substring(22)
                 const base64data = new Buffer(base64String, 'base64');
-                console.log(req.body.reportsContents[i]['imageDataUrl'])
+                console.log(req.body.reportsContents[i]['imageDataUrl'].substring(22))
                 reportFullPath = permanentFolder + req.body.customerId + "." + req.body.reportType + "." + Date.now() + ".jpg";
                 console.log(reportFullPath)
 

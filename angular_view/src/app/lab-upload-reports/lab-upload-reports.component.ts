@@ -53,6 +53,7 @@ export class LabUploadReportsComponent {
   selectedPlan:String;
   processedImages: any = [];
    images: Array<IImage> = [];
+  showTitle: boolean = false;
 
 
   constructor(private server: ServerService,private router:Router,
@@ -67,16 +68,16 @@ export class LabUploadReportsComponent {
     ImageCompressService.filesToCompressedImageSource(fileInput.target.files).then(observableImages => {
       observableImages.subscribe((image) => {
           this.images.push(image);
-          console.log(fileInput.target.files)
+          // console.log(fileInput.target.files)
           // console.log(this.images)
           // console.log(this.images[0]['imageDataUrl'])
         }, (error) => {
-          console.log("Error while converting"); }
-        // }, () => {
-        //   this.processedImages = images;
-        //   console.log(this.processedImages)
-        //   this.showTitle = true;
-        // }
+          console.log("Error while converting");
+        }, () => {
+          this.processedImages = this.images;
+          console.log(this.processedImages)
+          this.showTitle = true;
+        }
       );
     });
 
